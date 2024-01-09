@@ -8,4 +8,20 @@ class Bloc{
 
     }
 
+    data shuffle() {
+        return data;
+    }
+
+    void returnMusic() {
+
+    }
+
+    Music query(String trait) {
+        return;
+    }
+
+    void removeSong() {
+
+    }
+
 }
