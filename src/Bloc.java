@@ -4,16 +4,23 @@ class Bloc{
     String albumName;
     boolean isStatic;
 
-    public Bloc (){
-
+    public Bloc (List<Music> data, boolean isAlbum, String albumName, boolean isStatic){
+        this.data = data;
+        this.isAlbum = isAlbum;
+        this.albumName = albumName;
+        this.isStatic = isStatic;
     }
 
     data shuffle() {
-        return data;
+        return Collections.shuffle(data);
     }
 
-    void returnMusic() {
+    data shuffle2() { //THIS ONE IS FOR ALBUMS - Smart
+        return Collections.shuffle(data);
+    }
 
+    Music returnMusic() {
+        return data.get(0);
     }
 
     Music query(String trait) {
