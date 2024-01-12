@@ -1,2 +1,4 @@
+package Java;
+
 interface BlocItem {
 }
