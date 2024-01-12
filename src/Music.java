@@ -1,16 +1,18 @@
+import java.io.File;
+
 class Music{
     private String name, artist, album, genre;
     private int trackNumber, playtime, playbackWeight = 5;
-    private file File;
+    private File file;
 
-    public Music(String name, String artist, String album, String genre, int trackNumber, int playtime, file file) {
+    public Music(String name, String artist, String album, String genre, int trackNumber, int playtime, File file) {
         this.name = name;
         this.artist = artist;
         this.album = album;
         this.genre = genre;
         this.trackNumber = trackNumber;
         this.playtime = playtime;
-        File = file;
+        this.file = file;
     }
 
     public Music(String name, String artist, String album, String genre, int trackNumber, int playtime) {
@@ -66,11 +68,11 @@ class Music{
         return playtime;
     }
 
-    public file getFile() {
-        return File;
+    public File getFile() {
+        return file;
     }
 
-    public void setFile(file file) {
-        File = file;
+    public void setFile(File file) {
+        this.file = file;
     }
 }
