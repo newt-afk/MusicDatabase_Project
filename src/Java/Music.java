@@ -2,7 +2,7 @@ package Java;
 
 import java.io.File;
 
-class Music{
+public class Music{
     private String name, artist, album, genre;
     private int trackNumber, playtime, playbackWeight = 5;
     private File file;
