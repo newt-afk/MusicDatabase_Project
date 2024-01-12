@@ -1,3 +1,9 @@
+package Java;
+
+import Java.Music;
+import java.util.List;
+import java.util.*;
+
 class Bloc{
     List<Music> data = new List<Music>;
     boolean isAlbum;
