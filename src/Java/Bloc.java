@@ -1,6 +1,5 @@
 package Java;
 
-import Java.Music;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -8,15 +7,8 @@ import java.util.List;
 
 class Bloc{
     List<Music> data = new ArrayList<>();
-    boolean isAlbum;
-    String albumName;
-    boolean isStatic;
-
-    public Bloc (List<Music> data, boolean isAlbum, String albumName, boolean isStatic){
+    public Bloc (List<Music> data){
         this.data = data;
-        this.isAlbum = isAlbum;
-        this.albumName = albumName;
-        this.isStatic = isStatic;
     }
 
     /*List shuffle() {
