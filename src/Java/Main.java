@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import Java.Player;
 public class Main extends Application{
     public static void main(String[] args) {
+        Helpers.setupLogger();
         launch(args);
     }
 

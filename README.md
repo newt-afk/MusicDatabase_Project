@@ -8,6 +8,7 @@
 5. allow setting volume
 6. implement logging and graceful failing
 7. in UI, able to toggle music between linked and non-linked
+8. send all potential errors to logger
 
 ## maybe?
 1. make user able to set music directory, with default directory if not set
