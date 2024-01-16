@@ -1,44 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: grey; -fx-border-color: black; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="405.0" prefWidth="599.0" style="-fx-background-color: black; -fx-border-color: black; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXML.Controller">
    <children>
-      <ScrollPane layoutX="181.0" layoutY="6.0" prefHeight="286.0" prefWidth="414.0">
+      <ScrollPane hbarPolicy="NEVER" layoutX="190.0" layoutY="6.0" prefHeight="286.0" prefWidth="414.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="285.0" prefWidth="414.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="286.0" prefWidth="400.0" style="-fx-background-color: grey;">
                <children>
                   <Label layoutX="14.0" layoutY="14.0" text="Label" />
-               </children></AnchorPane>
+               </children>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+            </AnchorPane>
         </content>
       </ScrollPane>
-      <AnchorPane layoutX="5.0" layoutY="292.0" prefHeight="102.0" prefWidth="589.0" style="-fx-background-color: grey;">
+      <AnchorPane layoutX="5.0" layoutY="292.0" prefHeight="103.0" prefWidth="590.0" style="-fx-background-color: black;">
          <effect>
             <ColorAdjust brightness="-0.17" />
          </effect>
          <children>
-            <Button layoutX="276.0" layoutY="47.0" mnemonicParsing="false" text="Play" />
-            <Label layoutX="14.0" layoutY="20.0" text="Song Name" />
-            <Label layoutX="14.0" layoutY="42.0" text="Album" />
-            <Label layoutX="14.0" layoutY="64.0" text="Artist" />
-            <Button layoutX="325.0" layoutY="47.0" mnemonicParsing="false" text="&gt; &gt; &gt;" />
-            <Button layoutX="217.0" layoutY="47.0" mnemonicParsing="false" text="&lt; &lt; &lt;" />
-            <Button layoutX="508.0" layoutY="16.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="53.0" text="Loop" />
-            <Button layoutX="508.0" layoutY="60.0" mnemonicParsing="false" text="Shuffle" />
+            <Button layoutX="276.0" layoutY="45.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="35.0" style="-fx-background-color: #000000;" />
+            <Label layoutX="14.0" layoutY="20.0" text="Song Name" textFill="#fffdfd" />
+            <Label layoutX="14.0" layoutY="42.0" text="Album" textFill="WHITE" />
+            <Label layoutX="14.0" layoutY="64.0" text="Artist" textFill="WHITE" />
+            <Button layoutX="325.0" layoutY="60.0" mnemonicParsing="false" text="&gt; &gt; &gt;" />
+            <Button layoutX="215.0" layoutY="60.0" mnemonicParsing="false" text="&lt; &lt; &lt;" />
+            <CheckBox layoutX="488.0" layoutY="11.0" mnemonicParsing="false" text="Loop" textFill="WHITE" />
+            <CheckBox layoutX="488.0" layoutY="43.0" mnemonicParsing="false" text="Shuffle" textFill="WHITE" />
+            <CheckBox layoutX="488.0" layoutY="73.0" mnemonicParsing="false" text="Shuffle +" textFill="WHITE" />
+            <ProgressBar fx:id="pB" layoutX="152.0" layoutY="28.0" prefHeight="18.0" prefWidth="286.0" progress="0.18" />
+            <Button layoutX="275.0" layoutY="57.0" mnemonicParsing="false" onAction="#playButton" prefHeight="33.0" prefWidth="40.0" style="-fx-background-color: black;">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Media/White%20Play%20Button.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
-      <ScrollPane layoutX="5.0" layoutY="6.0" prefHeight="286.0" prefWidth="170.0">
+      <ScrollPane hbarPolicy="NEVER" layoutX="10.0" layoutY="6.0" prefHeight="286.0" prefWidth="174.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="286.0" prefWidth="165.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="286.0" prefWidth="165.0" style="-fx-background-color: grey;">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="Label" />
-                  <Label layoutX="14.0" layoutY="32.0" text="Label" />
-                  <Label layoutX="14.0" layoutY="50.0" text="Label" />
-                  <Label layoutX="14.0" layoutY="68.0" text="Label" />
+                  <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
+                  <Button layoutX="14.0" layoutY="50.0" mnemonicParsing="false" text="Button" />
+                  <Button layoutX="14.0" layoutY="88.0" mnemonicParsing="false" text="Button" />
+                  <Button layoutX="14.0" layoutY="125.0" mnemonicParsing="false" text="Button" />
                </children></AnchorPane>
         </content>
       </ScrollPane>
