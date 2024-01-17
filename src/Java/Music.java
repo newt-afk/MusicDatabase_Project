@@ -5,11 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.logging.*;
 
-public class Music{
+class Music{
     private static final Logger LOGGER = Logger.getLogger(Music.class.getName());
     private String name, artist, genre;
-    private static long availableID = Helpers.lastAvailableIDBeforeLastSave;
-    public final long key;
+    protected static long availableID = Helpers.lastAvailableIDBeforeLastSave;
+    protected long key;
     private File file;
     List<Long> link = new LinkedList<>();
 
