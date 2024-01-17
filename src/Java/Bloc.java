@@ -3,7 +3,6 @@ package Java;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 class Bloc{
     private static final Logger LOGGER = Logger.getLogger(Bloc.class.getName());
