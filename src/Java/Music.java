@@ -52,7 +52,7 @@ public class Music{
     }
 
     public void linkTracks(Collection<Music> musicCollection) {
-        link.addAll(musicCollection);
+        for (Music m:musicCollection) if (m != null) link.add(m); // filter out nulls
     }
 
     public void linkTracksWithoutDuplicates (Collection<Music> musicCollection) {
@@ -65,6 +65,7 @@ public class Music{
         if (pos < 0) LOGGER.log(Level.SEVERE, "Tried to link at negative index to " + name);
         else if (pos >= link.size())
             LOGGER.log(Level.SEVERE, "Tried to link at " + pos + " in a " + link.size() + " sized link, to " + name);
+        else if (m == null) LOGGER.log(Level.WARNING, "Tried to link NULL into " + name + " at " + pos);
         else link.add(pos, m);
     }
 

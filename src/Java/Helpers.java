@@ -28,6 +28,7 @@ public class Helpers {
     public static void setupLogger() {
         // this gets the root logger, all other loggers will send logs to the root
         Logger rootLogger = Logger.getLogger("");
+        rootLogger.setLevel(Level.ALL); // log everything, change this before presenting
         try {
             // need try catch in case we can't create the file and write to it
             Handler filehandler = new FileHandler("test.log");
