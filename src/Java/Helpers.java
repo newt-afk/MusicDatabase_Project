@@ -8,17 +8,24 @@ public class Helpers {
     public static String musicDir = "/music/"; //This potentially allows the user to change where their music is stored
     public static Long lastAvailableIDBeforeLastSave = (long) 0;
     private static final HashMap<Long, Music> internalMap = new HashMap<>();
-    public static Music getMusic(Long id) {
+    public static Music getMusic(Long id) throws Exception {
         if (internalMap.containsKey(id)) {
             return internalMap.get(id);
         }
-        LOGGER.warning("Tried to access music with id " + id.toString() + ", doesn't exist.");
-        return null;
+        throw new Exception("Music doesn't exist");
     }
     public static void addMusic(Music music) {
         if (internalMap.containsKey(music.key))
             LOGGER.warning("Overwriting " + internalMap.get(music.key).getName() + " with " + music.getName());
         internalMap.put(music.key, music);
+    }
+
+    public static void removeMusic(long id) {
+        internalMap.remove(id);
+    }
+
+    public static boolean hasKey(long key) {
+        return internalMap.containsKey(key);
     }
     private Helpers() {
         // This class is only meant to hold information shared between classes, and helper methods. It should only

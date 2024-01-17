@@ -10,9 +10,9 @@ public class Music{
     private String name, artist, genre;
     private static long availableID = Helpers.lastAvailableIDBeforeLastSave;
     public final long key;
-    private int playtime, playbackWeight = 5;
+    private final int playtime;
     private File file;
-    List<Music> link = new LinkedList<>();
+    List<Long> link = new LinkedList<>();
 
     public Music(String name, String artist, String genre, int playtime, File file, long ID) throws FileNotFoundException {
         this.name = name;
@@ -37,26 +37,29 @@ public class Music{
         if (!this.file.exists()) throw new FileNotFoundException();
     }
 
-    public List<Music> getLinked() {
-        List<Music> returned = new LinkedList<>(link);
-        returned.add(0, this); //This guarantees that the lead track never changes.
+    public List<Long> getLinked() {
+        List<Long> returned = new LinkedList<>(link);
+        returned.add(0, this.key); //This guarantees that the lead track never changes.
         // If you want to change the lead track, use getLinked and linkAll to move on the new head, then clear this link.
         return returned;
     }
 
     public void linkTrack(Music m) {
         if (m != null) {
-            LOGGER.info("Music " + m.getName() + " was linked to " + this.getName());
-            link.add(m);
+            if (!Helpers.hasKey(m.key)) LOGGER.severe("Music had key not found in helper, CONTRACT VIOLATED");
+            else {
+                LOGGER.info("Music " + m.getName() + " was linked to " + this.getName());
+                link.add(m.key);
+            }
         }else LOGGER.log(Level.WARNING, "Tried to link music to " + this.getName() + ", but was null");
     }
 
-    public void linkTracks(Collection<Music> musicCollection) {
-        for (Music m:musicCollection) if (m != null) link.add(m); // filter out nulls
+    public void linkTracks(Collection<Long> musicCollection) {
+        for (Long m:musicCollection) if (m != null ) link.add(m); // filter out nulls and invalids
     }
 
-    public void linkTracksWithoutDuplicates (Collection<Music> musicCollection) {
-        for (Music m: musicCollection) {
+    public void linkTracksWithoutDuplicates (Collection<Long> musicCollection) {
+        for (Long m: musicCollection) {
             if (m != null && !link.contains(m)) link.add(m);
         }
     }
@@ -66,11 +69,22 @@ public class Music{
         else if (pos >= link.size())
             LOGGER.log(Level.SEVERE, "Tried to link at " + pos + " in a " + link.size() + " sized link, to " + name);
         else if (m == null) LOGGER.log(Level.WARNING, "Tried to link NULL into " + name + " at " + pos);
-        else link.add(pos, m);
+        else if (!Helpers.hasKey(m.key)) LOGGER.severe("CONTRACT VIOLATED: Music ID not found in Helpers");
+        else link.add(pos, m.key);
+    }
+
+    public void linkTrack(Long music, int pos) {
+        if (pos < 0 || pos >= link.size())
+            LOGGER.log(Level.SEVERE, "Tried to link at " + pos + " in a " + link.size() + " sized link, to " + name);
+        else if (!Helpers.hasKey(music)) LOGGER.severe("CONTRACT VIOLATED: Music ID not found in Helpers");
+        else link.add(pos, music);
     }
 
     public void unlinkTrack(Music m) {
-        link.remove(m);
+        link.remove(m.key);
+    }
+    public void unlinkTrack(Long key) {
+        link.remove(key);
     }
 
     public void unlinkAll() {
@@ -85,7 +99,7 @@ public class Music{
         }else if (pos2 < 0 || pos2 >= link.size())
             LOGGER.log(Level.SEVERE, "Tried to reorder links from position " + pos1 + " of a " + link.size() + " sized link, on " + name);
         else {
-            Music m = link.get(pos1);
+            Long m = link.get(pos1);
             link.remove(pos1);
             linkTrack(m, pos2);
         }
