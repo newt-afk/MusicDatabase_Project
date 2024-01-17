@@ -5,18 +5,16 @@ import java.util.logging.*;
 
 public class Helpers {
     private static final Logger LOGGER = Logger.getLogger(Helpers.class.getName());
-    public static String musicDir = "/music/"; //This potentially allows the user to change where their music is stored
-    private static final String configDir = "/config/";
     public static Long lastAvailableIDBeforeLastSave = (long) 0;
     private static final HashMap<Long, Music> MUSIC_HASH_MAP = new HashMap<>();
     private static final HashMap<String, Bloc> BLOC_HASH_MAP = new HashMap<>();
-    static Music getMusic(Long id) throws Exception {
+    public static Music getMusic(Long id) throws Exception {
         if (MUSIC_HASH_MAP.containsKey(id)) {
             return MUSIC_HASH_MAP.get(id);
         }
         throw new Exception("Music doesn't exist");
     }
-    static void addMusic(Music music) {
+    public static void addMusic(Music music) {
         if (MUSIC_HASH_MAP.containsKey(music.key))
             LOGGER.warning("Overwriting " + MUSIC_HASH_MAP.get(music.key).getName() + " with " + music.getName());
         MUSIC_HASH_MAP.put(music.key, music);
@@ -38,8 +36,8 @@ public class Helpers {
     }
 
     public static boolean hasBloc(String name) {return BLOC_HASH_MAP.containsKey(name);}
-    static Bloc getBloc(String name) {return BLOC_HASH_MAP.get(name);}
-    static void addBloc(Bloc b) {
+    public static Bloc getBloc(String name) {return BLOC_HASH_MAP.get(name);}
+    public static void addBloc(Bloc b) {
         if (b == null) LOGGER.severe("Tried to add NULL Bloc to the Map");
         else if (BLOC_HASH_MAP.containsKey(b.name))
             LOGGER.severe("Bloc name collision for " +BLOC_HASH_MAP.get(b.name)+" and " + b + ".");
@@ -73,6 +71,6 @@ public class Helpers {
     }
 
     public static String stateToFile() {
-        return null;
+        return "MusicNextID: " + Music.availableID;
     }
 }

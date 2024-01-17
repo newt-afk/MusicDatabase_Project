@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.logging.*;
 
-class Music{
+public class Music{
     private static final Logger LOGGER = Logger.getLogger(Music.class.getName());
     private String name, artist, genre;
     protected static long availableID = Helpers.lastAvailableIDBeforeLastSave;
