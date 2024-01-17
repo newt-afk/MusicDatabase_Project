@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class Bloc{
+public class Bloc{
     private static final Logger LOGGER = Logger.getLogger(Bloc.class.getName());
     public String name;
     List<Long> data = new ArrayList<>(), orderSoFar = new LinkedList<>();
@@ -28,7 +28,7 @@ class Bloc{
         this.name = name;
         this.data.addAll(data);
     }
-    private static String nameGen() {
+    private static String nameGen() { // Should not be used much in practice. If it is, the slowdown is punishment.
         String untitled = "Untitled";
         if (!Helpers.hasBloc(untitled)) return untitled;
         int i = 0;
@@ -164,26 +164,23 @@ class Bloc{
             }
         }
     }
-
-
-
     Music query(String trait) {
         return null;
     }
 
-    void addMusic(Music m) {
+    public void addMusic(Music m) {
         if (m == null)
             LOGGER.warning("Tried to add NULL to Bloc");
         else if (!Helpers.hasMusicKey(m.key))
             LOGGER.severe("Tried adding music with ID outside of hashmap, CONTRACT VIOLATED");
         else data.add(m.key);
     }
-    void addMusic(Long key) {
+    public void addMusic(Long key) {
         if (!Helpers.hasMusicKey(key)) LOGGER.warning("Tried to add bad Music ID to Bloc.");
         else data.add(key);
     }
 
-    void addMusic(Music m, int pos) {
+    public void addMusic(Music m, int pos) {
         if (m == null) LOGGER.warning("Tried to add NULL to Bloc");
         else if (!Helpers.hasMusicKey(m.key))
             LOGGER.severe("Tried adding music with ID outside of hashmap, CONTRACT VIOLATED");
@@ -191,15 +188,15 @@ class Bloc{
             LOGGER.severe("Tried to insert Music at index " + pos + " for a " + data.size() + " sized Bloc.");
         else data.add(pos, m.key);
     }
-    void removeSong(int pos) {
+    public void removeSong(int pos) {
         if (pos < 0 || pos > data.size())
             LOGGER.severe("Tried removing index " + pos + " for a " + data.size() + " Bloc");
         else data.remove(pos);
     }
-    void removeAll(Music m) {
+    public void removeAll(Music m) {
         data.removeIf(x -> x == m.key); // removes all music objects with same objectID as m
     }
-    void removeAll(Collection<Long> musicCollection) {
+    public void removeAll(Collection<Long> musicCollection) {
         data.removeAll(musicCollection);
     }
 
