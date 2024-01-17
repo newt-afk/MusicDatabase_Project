@@ -21,7 +21,8 @@
 
 # Contracts
 * Linked music is identified by the first track in the link. 
-To access a chain of music, you must first identify the first song in the link.
+* You are only allowed to create a new Music object if you are reading from file,
+or the user made you do it. All other methods can only get music objects from a map stored in Helper.
 
 ## Potential problems
 * I want to assume that all linked music start the same
