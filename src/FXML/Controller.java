@@ -2,15 +2,29 @@ package FXML;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ProgressBar;
 
-public class Controller {
-    static double ii = 0;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class Controller implements Initializable{
+    double progress;
     boolean playing = false;
 
-    public void controlBar(ActionEvent e) {
-
+    @FXML
+    private ProgressBar pB;
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        pB.setStyle("-fx-accent: Yellow");
+    }
+    public void increaseProgress() {
+        if (progress < 100) {
+            progress = 0;
+        }
+        progress += 0.1;
+        pB.setProgress(progress);
     }
 
     public void playButton(ActionEvent e) {
@@ -42,5 +56,4 @@ public class Controller {
     public void skipBackwards(ActionEvent e) {
         System.out.println("skipBackwards");
     }
-
 }

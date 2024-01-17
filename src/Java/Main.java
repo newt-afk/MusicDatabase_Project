@@ -1,5 +1,6 @@
 package Java;
 
+import FXML.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -23,5 +24,7 @@ public class Main extends Application{
         stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();
+
+
     }
 }
