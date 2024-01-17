@@ -62,10 +62,10 @@ public class Music{
     }
 
     public void linkTrack(Music m, int pos) {
-        if (pos < 0) LOGGER.log(Level.WARNING, "Tried to link at negative index to " + name);
+        if (pos < 0) LOGGER.log(Level.SEVERE, "Tried to link at negative index to " + name);
         else if (pos >= link.size())
-            LOGGER.log(Level.WARNING, "Tried to link at " + pos + " in a " + link.size() + " sized link, to " + name);
-        link.add(pos, m);
+            LOGGER.log(Level.SEVERE, "Tried to link at " + pos + " in a " + link.size() + " sized link, to " + name);
+        else link.add(pos, m);
     }
 
     public void unlinkTrack(Music m) {
