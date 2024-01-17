@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 class Bloc{
     private static final Logger LOGGER = Logger.getLogger(Bloc.class.getName());
+    public String name;
     List<Long> data = new ArrayList<>(), orderSoFar = new LinkedList<>();
     ListIterator<Long> currentPosition = orderSoFar.listIterator();
     private boolean shuffle, smartShuffle, loop;
@@ -16,10 +17,23 @@ class Bloc{
     private final Queue<Integer> smartQueue = new LinkedList<>();
     private static final Random rand = new Random();
     private int posOnData = 0;
-    public Bloc() {} // default initialiser
+    public Bloc() {this.name = nameGen();} // default initializer
 
     public Bloc (Collection<Long> data){
-        this.data = data.stream().toList();
+        this.name = nameGen();
+        this.data.addAll(data);
+    }
+    public Bloc(String name) {this.name = nameGen();}
+    public Bloc(String name, Collection<Long> data) {
+        this.name = name;
+        this.data.addAll(data);
+    }
+    private static String nameGen() {
+        String untitled = "Untitled";
+        if (!Helpers.hasBloc(untitled)) return untitled;
+        int i = 0;
+        while (Helpers.hasBloc(untitled + i)) i++;
+        return untitled + i;
     }
 
     public boolean isUsingShuffle() {
@@ -84,7 +98,7 @@ class Bloc{
         // returns music as we go forward in time
         if (!currentPosition.hasNext()) orderSoFar.add(nextMusicGenerator());
         long nextThing = currentPosition.next();
-        if (Helpers.hasKey(nextThing)) {
+        if (Helpers.hasMusicKey(nextThing)) {
             if (useLinked.contains(nextThing)) data.addAll(Helpers.getMusic(nextThing).getLinked());
             return Helpers.getMusic(nextThing);
         }
@@ -143,7 +157,7 @@ class Bloc{
             LOGGER.warning("Tried to go too far back in Bloc");
             throw new Exception("Tried going too far back");
         }else {
-            if (Helpers.hasKey(prevThing)) return Helpers.getMusic(prevThing);
+            if (Helpers.hasMusicKey(prevThing)) return Helpers.getMusic(prevThing);
             else {
                 currentPosition.remove();
                 return prev();
@@ -160,18 +174,18 @@ class Bloc{
     void addMusic(Music m) {
         if (m == null)
             LOGGER.warning("Tried to add NULL to Bloc");
-        else if (!Helpers.hasKey(m.key))
+        else if (!Helpers.hasMusicKey(m.key))
             LOGGER.severe("Tried adding music with ID outside of hashmap, CONTRACT VIOLATED");
         else data.add(m.key);
     }
     void addMusic(Long key) {
-        if (!Helpers.hasKey(key)) LOGGER.warning("Tried to add bad Music ID to Bloc.");
+        if (!Helpers.hasMusicKey(key)) LOGGER.warning("Tried to add bad Music ID to Bloc.");
         else data.add(key);
     }
 
     void addMusic(Music m, int pos) {
         if (m == null) LOGGER.warning("Tried to add NULL to Bloc");
-        else if (!Helpers.hasKey(m.key))
+        else if (!Helpers.hasMusicKey(m.key))
             LOGGER.severe("Tried adding music with ID outside of hashmap, CONTRACT VIOLATED");
         else if (pos <0 || pos > data.size())
             LOGGER.severe("Tried to insert Music at index " + pos + " for a " + data.size() + " sized Bloc.");
@@ -187,6 +201,19 @@ class Bloc{
     }
     void removeAll(Collection<Long> musicCollection) {
         data.removeAll(musicCollection);
+    }
+
+    public String toFile() {
+        StringBuilder sb = new StringBuilder("Name: " + name + "\n");
+        if (!data.isEmpty()) {
+            sb.append("START IDS");
+            for (long l : data) {
+                sb.append("ID: ").append(l).append("\n");
+            }
+            sb.append("END IDS");
+        }
+        sb.append("END");
+        return sb.toString();
     }
 
 }

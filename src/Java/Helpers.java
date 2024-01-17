@@ -6,27 +6,31 @@ import java.util.logging.*;
 public class Helpers {
     private static final Logger LOGGER = Logger.getLogger(Helpers.class.getName());
     public static String musicDir = "/music/"; //This potentially allows the user to change where their music is stored
+    private static final String configDir = "/config/";
     public static Long lastAvailableIDBeforeLastSave = (long) 0;
-    private static final HashMap<Long, Music> internalMap = new HashMap<>();
+    private static final HashMap<Long, Music> MUSIC_HASH_MAP = new HashMap<>();
+    private static final HashMap<String, Bloc> BLOC_HASH_MAP = new HashMap<>();
     public static Music getMusic(Long id) throws Exception {
-        if (internalMap.containsKey(id)) {
-            return internalMap.get(id);
+        if (MUSIC_HASH_MAP.containsKey(id)) {
+            return MUSIC_HASH_MAP.get(id);
         }
         throw new Exception("Music doesn't exist");
     }
     public static void addMusic(Music music) {
-        if (internalMap.containsKey(music.key))
-            LOGGER.warning("Overwriting " + internalMap.get(music.key).getName() + " with " + music.getName());
-        internalMap.put(music.key, music);
+        if (MUSIC_HASH_MAP.containsKey(music.key))
+            LOGGER.warning("Overwriting " + MUSIC_HASH_MAP.get(music.key).getName() + " with " + music.getName());
+        MUSIC_HASH_MAP.put(music.key, music);
     }
 
     public static void removeMusic(long id) {
-        internalMap.remove(id);
+        MUSIC_HASH_MAP.remove(id);
     }
 
-    public static boolean hasKey(long key) {
-        return internalMap.containsKey(key);
+    public static boolean hasMusicKey(long key) {
+        return MUSIC_HASH_MAP.containsKey(key);
     }
+
+    public static boolean hasBloc(String name) {return BLOC_HASH_MAP.containsKey(name);}
     private Helpers() {
         // This class is only meant to hold information shared between classes, and helper methods. It should only
         // ever be static. Thus, by declaring a private constructor, nothing can create this class, and the default
@@ -49,5 +53,9 @@ public class Helpers {
         } catch (Exception e) {
             Logger.getAnonymousLogger().log(Level.SEVERE, "log file could not be created!!!", e);
         }
+    }
+
+    public static String stateToFile() {
+        return null;
     }
 }

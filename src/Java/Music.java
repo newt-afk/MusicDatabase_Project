@@ -10,15 +10,13 @@ public class Music{
     private String name, artist, genre;
     private static long availableID = Helpers.lastAvailableIDBeforeLastSave;
     public final long key;
-    private final int playtime;
     private File file;
     List<Long> link = new LinkedList<>();
 
-    public Music(String name, String artist, String genre, int playtime, File file, long ID) throws FileNotFoundException {
+    public Music(String name, String artist, String genre, File file, long ID) throws FileNotFoundException {
         this.name = name;
         this.artist = artist;
         this.genre = genre;
-        this.playtime = playtime;
         this.file = file;
         this.key = ID;
 
@@ -26,12 +24,12 @@ public class Music{
         if (!this.file.exists()) throw new FileNotFoundException();
     }
 
-    public Music(String name, String artist, String genre, int playtime, File file) throws FileNotFoundException {
+    public Music(String name, String artist, String genre, File file) throws FileNotFoundException {
         this.name = name;
         this.artist = artist;
         this.genre = genre;
-        this.playtime = playtime;
         this.file = file;
+        if (availableID < Helpers.lastAvailableIDBeforeLastSave) availableID = Helpers.lastAvailableIDBeforeLastSave;
         this.key = availableID++;
 
         if (!this.file.exists()) throw new FileNotFoundException();
@@ -46,7 +44,7 @@ public class Music{
 
     public void linkTrack(Music m) {
         if (m != null) {
-            if (!Helpers.hasKey(m.key)) LOGGER.severe("Music had key not found in helper, CONTRACT VIOLATED");
+            if (!Helpers.hasMusicKey(m.key)) LOGGER.severe("Music had key not found in helper, CONTRACT VIOLATED");
             else {
                 LOGGER.info("Music " + m.getName() + " was linked to " + this.getName());
                 link.add(m.key);
@@ -69,14 +67,14 @@ public class Music{
         else if (pos >= link.size())
             LOGGER.log(Level.SEVERE, "Tried to link at " + pos + " in a " + link.size() + " sized link, to " + name);
         else if (m == null) LOGGER.log(Level.WARNING, "Tried to link NULL into " + name + " at " + pos);
-        else if (!Helpers.hasKey(m.key)) LOGGER.severe("CONTRACT VIOLATED: Music ID not found in Helpers");
+        else if (!Helpers.hasMusicKey(m.key)) LOGGER.severe("CONTRACT VIOLATED: Music ID not found in Helpers");
         else link.add(pos, m.key);
     }
 
     public void linkTrack(Long music, int pos) {
         if (pos < 0 || pos >= link.size())
             LOGGER.log(Level.SEVERE, "Tried to link at " + pos + " in a " + link.size() + " sized link, to " + name);
-        else if (!Helpers.hasKey(music)) LOGGER.severe("CONTRACT VIOLATED: Music ID not found in Helpers");
+        else if (!Helpers.hasMusicKey(music)) LOGGER.severe("CONTRACT VIOLATED: Music ID not found in Helpers");
         else link.add(pos, music);
     }
 
@@ -129,15 +127,23 @@ public class Music{
         this.genre = genre;
     }
 
-    public int getPlaytime() {
-        return playtime;
-    }
-
     public File getFile() {
         return file;
     }
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public String fileString() {
+        StringBuilder ret = new StringBuilder(String.format("Name: %s\nArtist: %s\nGenre: %s\nFilename: %s\nID: %d\n",
+                name, artist, genre, file.getName(), key));
+        if (!link.isEmpty()) {
+            ret.append("LIST START\n");
+            for (long l: link) ret.append("ID: ").append(l).append('\n');
+            ret.append("LIST END\n");
+        }
+        ret.append("END\n\n");
+        return ret.toString();
     }
 }
