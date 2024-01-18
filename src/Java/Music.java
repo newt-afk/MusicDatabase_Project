@@ -1,5 +1,8 @@
 package Java;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -125,6 +128,10 @@ public class Music{
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public MediaPlayer toMediaPlayer() {
+        return new MediaPlayer(new Media(file.toURI().toString()));
     }
 
     public File getFile() {

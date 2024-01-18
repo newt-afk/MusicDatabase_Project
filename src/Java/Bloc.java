@@ -65,6 +65,11 @@ public class Bloc{
         for (long i: data) {
             try {
                 stuff.add(Helpers.getMusic(i));
+                for (long j: Helpers.getMusic(i).link) {
+                    try {
+                        stuff.add(Helpers.getMusic(j));
+                    }catch (Exception ignored) {}
+                }
             }catch (Exception e) {
                 purge(i);
             }
