@@ -14,10 +14,31 @@ import javafx.scene.Parent;
 import java.io.IOException;
 
 class Player {
-
-    void play() {
-        Media media = new Media("/Media/Music/Moonlight Sonata.mp3");
-        MediaPlayer mp = new MediaPlayer(media);
-        mp.play();
+    public MediaPlayer mp;
+    private Bloc bloc;
+    public Player(Bloc bloc) {
+        this.bloc = bloc;
+    }
+    public Player() {
+        this.bloc = Helpers.getBloc("Default");
+    }
+    void playNext() {
+        disposeOfPlayer();
+        Music m = bloc.next();
+        if (m == null) return; //end of playlist, and no loop
+        mp = m.toMediaPlayer();
+        mp.setAutoPlay(true);
+        mp.setOnEndOfMedia(this::playNext);
+    }
+    public void playPrev() {
+        disposeOfPlayer();
+        Music m = bloc.prev();
+        if (m == null) return;
+        mp = m.toMediaPlayer();
+        mp.setAutoPlay(true);
+        mp.setOnEndOfMedia(this::playNext);
+    }
+    private void disposeOfPlayer() {
+        if (mp != null) mp.dispose();
     }
 }

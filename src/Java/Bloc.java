@@ -58,6 +58,11 @@ public class Bloc{
 
     public void setLoop(boolean loop) {
         this.loop = loop;
+        if (!loop) {
+            LinkedList<Long> temp = new LinkedList<>(data);
+            Collections.shuffle(temp);
+            scrambled = temp;
+        }
     }
 
     public List<Music> getMusic() {
@@ -111,14 +116,18 @@ public class Bloc{
         // shuffles the underlying array
         Collections.shuffle(data);
     }
-    public Music next() throws Exception {
-        if (data.isEmpty()) throw new Exception("Data is empty, but queried for music.");
+    public Music next()  {
+        if (data.isEmpty()) return null;
         // returns music as we go forward in time
         if (!currentPosition.hasNext()) orderSoFar.add(nextMusicGenerator());
+
         long nextThing = currentPosition.next();
         if (Helpers.hasMusicKey(nextThing)) {
-            if (useLinked.contains(nextThing)) data.addAll(Helpers.getMusic(nextThing).getLinked());
-            return Helpers.getMusic(nextThing);
+            try {
+                if (useLinked.contains(nextThing))
+                    data.addAll(Helpers.getMusic(nextThing).getLinked());
+                return Helpers.getMusic(nextThing);
+            } catch (Exception ignored) {return null;} // won't happen, getMusic triggers on not having the thing.
         }
         else {
             currentPosition.remove();
@@ -138,22 +147,12 @@ public class Bloc{
                 smartQueue.add(r);
                 return data.get(r);
             }else { //literally, smartshuffle is useless without looping. this is the same as shuffle
-                if (scrambled.isEmpty()) {
-                    LinkedList<Long> temp = new LinkedList<>(data);
-                    Collections.shuffle(temp);
-                    scrambled = temp; //this only works because temp is a LinkedList.
-                }
                 return scrambled.poll();
             }
         } else if (shuffle) {
             if (loop) {
                 return data.get(rand.nextInt(data.size()));
             }else {
-                if (scrambled.isEmpty()) {
-                    LinkedList<Long> temp = new LinkedList<>(data);
-                    Collections.shuffle(temp);
-                    scrambled = temp; //this only works because temp is a LinkedList.
-                }
                 return scrambled.poll();
             }
         }else {
@@ -167,15 +166,17 @@ public class Bloc{
         }
     }
 
-    public Music prev() throws Exception {
-        if (data.isEmpty()) throw new Exception("Data is empty, but queried for music.");
+    public Music prev() {
+        if (data.isEmpty()) return null;
         // returns music as we go backward in time
         long prevThing = currentPosition.previous();
         if (!currentPosition.hasPrevious()) {
             LOGGER.warning("Tried to go too far back in Bloc");
-            throw new Exception("Tried going too far back");
+            return null;
         }else {
-            if (Helpers.hasMusicKey(prevThing)) return Helpers.getMusic(prevThing);
+            if (Helpers.hasMusicKey(prevThing))
+                try {return Helpers.getMusic(prevThing);}
+            catch (Exception e) {return null;}
             else {
                 currentPosition.remove();
                 return prev();
