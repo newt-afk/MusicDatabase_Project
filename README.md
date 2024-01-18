@@ -3,15 +3,14 @@
 ## TODO
 1. implement music using javafx media and mediaplayer
 2. allow creation of playlists and albums in ui
-3. implement shuffle
-4. implement letting others see your playlists, albums, able to download your music
-5. allow setting volume
-6. implement logging and graceful failing
-7. in UI, able to toggle music between linked and non-linked
-8. send all potential errors to logger
+3. allow setting volume
+4. implement logging and graceful failing
+5. in UI, able to toggle music between linked and non-linked
+6. send all potential errors to logger
 
 ## maybe?
 1. make user able to set music directory, with default directory if not set
+2. send files over internet
 
 ## files (not implemented)
 * player setting file
