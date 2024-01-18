@@ -1,13 +1,14 @@
 package Java;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.*;
 
 public class Helpers {
+    static {setupLogger();} // so the logger is loaded first, or close to first.
     private static final Logger LOGGER = Logger.getLogger(Helpers.class.getName());
-    public static Long lastAvailableIDBeforeLastSave = (long) 0;
-    private static final HashMap<Long, Music> MUSIC_HASH_MAP = new HashMap<>();
-    private static final HashMap<String, Bloc> BLOC_HASH_MAP = new HashMap<>();
+    public static Long lastAvailableIDBeforeLastSave = FileManager.parseStateFile();
+    private static final Map<String, Bloc> BLOC_HASH_MAP = FileManager.parseBlocFile();
+    private static final Map<Long, Music> MUSIC_HASH_MAP = FileManager.parseMusicFile();
     public static Music getMusic(Long id) throws Exception {
         if (MUSIC_HASH_MAP.containsKey(id)) {
             return MUSIC_HASH_MAP.get(id);
@@ -18,6 +19,7 @@ public class Helpers {
         if (MUSIC_HASH_MAP.containsKey(music.key))
             LOGGER.warning("Overwriting " + MUSIC_HASH_MAP.get(music.key).getName() + " with " + music.getName());
         MUSIC_HASH_MAP.put(music.key, music);
+        BLOC_HASH_MAP.get("Default").addMusic(music);
     }
 
     public static void removeMusic(long id) {
@@ -54,20 +56,22 @@ public class Helpers {
     public static void setupLogger() {
         // this gets the root logger, all other loggers will send logs to the root
         Logger rootLogger = Logger.getLogger("");
-        rootLogger.setLevel(Level.ALL); // log everything, change this before presenting
+        System.out.println("badness");
         try {
             // need try catch in case we can't create the file and write to it
             Handler filehandler = new FileHandler("test.log");
+            rootLogger.info("Logger created");
             SimpleFormatter formatter = new SimpleFormatter();
             // remove default console handlers, we don't need them anymore
-            if (rootLogger.getHandlers()[0] instanceof ConsoleHandler)
-                rootLogger.removeHandler(rootLogger.getHandlers()[0]);
+            /*if (rootLogger.getHandlers()[0] instanceof ConsoleHandler)
+                rootLogger.removeHandler(rootLogger.getHandlers()[0]);*/
 
             filehandler.setFormatter(formatter);
             rootLogger.addHandler(filehandler);
         } catch (Exception e) {
             Logger.getAnonymousLogger().log(Level.SEVERE, "log file could not be created!!!", e);
         }
+        rootLogger.setLevel(Level.INFO); // log everything, change this before presenting
     }
 
     public static String stateToFile() {

@@ -20,9 +20,4 @@ class Player {
         MediaPlayer mp = new MediaPlayer(media);
         mp.play();
     }
-
-    Bloc createPlaylist() {
-        return null;
-    }
-
 }
