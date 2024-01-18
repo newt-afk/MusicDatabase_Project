@@ -44,7 +44,8 @@ public class FileManager {
                     while (!n.equals("END")) n = s.nextLine();
                     continue;
                 }
-                File file = new File(FileManager.class.getResource(musicPath + filename).getPath());
+                File file = new File(FileManager.class.getResource(musicPath + filename)
+                        .getPath().replaceAll("%20", " "));
                 key = s.nextLong();
                 s.nextLine();
                 String n = s.nextLine();
@@ -58,6 +59,7 @@ public class FileManager {
                     ret.put(key, new Music(name, artist, genre, file, key));
                     ret.get(key).linkTracks(linked);
                     defaultBloc.add(key);
+                    continue;
                 }
                 if (!s.nextLine().equals("END")) LOGGER.warning("Missing END token");
                 ret.put(key, new Music(name, artist, genre, file, key));
@@ -65,8 +67,7 @@ public class FileManager {
                 defaultBloc.add(key);
             }
         }catch (IOException io) {
-            LOGGER.log(Level.SEVERE, "IO exception encountered when reading music file");
-            LOGGER.log(Level.SEVERE, "File we're on " + filename, io);
+            LOGGER.log(Level.SEVERE, "IO exception encountered when reading music file\nwe're on: " + filename, io);
         }catch (InputMismatchException inpme) {
             LOGGER.log(Level.SEVERE, "Unexpected token in Media.Music file", inpme);
             ret.clear();
