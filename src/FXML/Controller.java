@@ -169,6 +169,8 @@ public class Controller implements Initializable{
         final ScrollPane[] lastOpened = {new ScrollPane()};
         final CheckBox[] lastOpened3 = {new CheckBox()};
         int y = -20;
+
+        System.out.println(Helpers.blocList().isEmpty());
         if(!Helpers.blocList().isEmpty()) {
             LOGGER.log(Level.FINE,"Bloc is not empty");
             for(int i = 0; i < Helpers.blocList().size(); i++) {
@@ -217,15 +219,30 @@ public class Controller implements Initializable{
                 playlistNames.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        playlistScroll.setOpacity(1);
-                        check.setOpacity(1);
-                        lastOpened3[0].setOpacity(0);
-                        lastOpened3[0] = check;
-                        lastOpened[0].setOpacity(0);
-                        lastOpened[0] = playlistScroll;
+                        if (lastOpened[0] == playlistScroll) {
+                            playlistScroll.setOpacity(0);
+                            playlistScroll.setDisable(true);
+                            check.setOpacity(0);
+                            check.setDisable(true);
+                            lastOpened[0] = null;
+                        } else {
+                            if (lastOpened[0] != null) {
+                                lastOpened[0].setOpacity(0);
+                                lastOpened[0].setDisable(true);
+                                lastOpened3[0].setOpacity(0);
+                                lastOpened3[0].setDisable(true);
+                            }
+                            playlistScroll.setDisable(false);
+                            playlistScroll.setOpacity(1);
+                            lastOpened[0] = playlistScroll;
+                            check.setDisable(false);
+                            check.setOpacity(1);
+                            lastOpened3[0] = check;
+                        }
                         stage.show();
                     }
                 });
+
                 y+=35;
                 if (Helpers.blocList().get(i).name.equals("Default")) {
                     playlistNames.setText("All Songs");
@@ -305,14 +322,11 @@ public class Controller implements Initializable{
     }
 
     public void viewAlbum(ActionEvent e) {
-        System.out.println("viewPlaylist");
         if (lastOpened2 == vP) {
-            System.out.println("t");
             vP.setOpacity(0);
             vP.setDisable(true);
             lastOpened2 = null;
         } else {
-            System.out.println("f");
             if (lastOpened2 != null) {
                 lastOpened2.setOpacity(0);
                 lastOpened2.setDisable(true);
@@ -320,6 +334,7 @@ public class Controller implements Initializable{
             vP.setDisable(false);
             vP.setOpacity(1);
             lastOpened2 = vP;
+            viewPlaylists();
         }
     }
 
