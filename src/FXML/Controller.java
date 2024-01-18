@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,11 +102,11 @@ public class Controller implements Initializable{
     }
     public void viewAlbum(ActionEvent e) {
         System.out.println("viewPlaylist");
-        if (opacity == true) {
+        if (opacity) {
             opacity = false;
             aM.setOpacity(0);
         }
-        if (opacity2 == false) {
+        if (!opacity2) {
             opacity2 = true;
             vP.setOpacity(1);
         } else {
@@ -142,15 +143,15 @@ public class Controller implements Initializable{
         String songName = addSongName();
         String artist = addArtist();
         String genre = addGenre();
-        if (songName == "") {
+        if (Objects.equals(songName, "")) {
             errorMessage = "You have not entered the song name" + "\n";
             error = true;
         }
-        if (artist == "") {
+        if (Objects.equals(artist, "")) {
             errorMessage = errorMessage + "You have not entered the artist name" + "\n";
             error = true;
         }
-        if (genre == "") {
+        if (Objects.equals(genre, "")) {
             errorMessage = errorMessage + "You have not entered the genre name" + "\n";
             error = true;
         }
@@ -159,7 +160,7 @@ public class Controller implements Initializable{
             error = true;
         }
 
-        if (error = true) {
+        if (error) {
             errorAddition.setText(errorMessage);
             return;
         }
@@ -170,41 +171,25 @@ public class Controller implements Initializable{
 
     public void playButton(ActionEvent e) {
         System.out.println("playButton");
-        if (playing == false) {
-            playing = true;
-        } else {
-            playing = false;
-        }
+        playing = !playing;
         System.out.println(playing);
     }
 
     public void loop(ActionEvent e) {
         System.out.println("Loop");
-        if (loop == false) {
-            loop = true;
-        } else {
-            loop = false;
-        }
-        Helpers.getBloc("Default").setLoop(shuffle);
+        loop = !loop;
+        Helpers.getBloc("Default").setLoop(loop);
     }
 
     public void shuffle(ActionEvent e) {
         System.out.println("Shuffle");
-        if (shuffle == false) {
-            shuffle = true;
-        } else {
-            shuffle = false;
-        }
+        shuffle = !shuffle;
         Helpers.getBloc("Default").setShuffle(shuffle);
     }
 
     public void shuffle2(ActionEvent e) {
         System.out.println("Shuffle2");
-        if (shuffleplus == false) {
-            shuffleplus = true;
-        } else {
-            shuffleplus = false;
-        }
+        shuffleplus = !shuffleplus;
         Helpers.getBloc("Default").setSmartShuffle(shuffleplus);
     }
 
@@ -218,11 +203,11 @@ public class Controller implements Initializable{
 
     public void addMusic(ActionEvent e) {
         System.out.println("addMusic");
-        if (opacity2 == true) {
+        if (opacity2) {
             opacity2 = false;
             vP.setOpacity(0);
         }
-        if (opacity == false) {
+        if (!opacity) {
             opacity = true;
             aM.setOpacity(1);
         } else {
