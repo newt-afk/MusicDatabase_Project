@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import Java.Player;
@@ -21,6 +23,8 @@ import java.io.FileReader;
 public class Main extends Application{
     public static void main(String[] args) {
         Helpers.setupLogger();
+        Player player = new Player();
+        player.playNext();
         launch(args);
     }
 

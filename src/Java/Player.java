@@ -27,7 +27,7 @@ class Player {
         Music m = bloc.next();
         if (m == null) return; //end of playlist, and no loop
         mp = m.toMediaPlayer();
-        mp.setAutoPlay(true);
+        mp.play();
         mp.setOnEndOfMedia(this::playNext);
     }
     public void playPrev() {
@@ -35,7 +35,7 @@ class Player {
         Music m = bloc.prev();
         if (m == null) return;
         mp = m.toMediaPlayer();
-        mp.setAutoPlay(true);
+        mp.play();
         mp.setOnEndOfMedia(this::playNext);
     }
     private void disposeOfPlayer() {
