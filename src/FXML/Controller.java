@@ -4,6 +4,8 @@ import Java.Bloc;
 import Java.Helpers;
 import Java.Main;
 import Java.Player;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -38,7 +40,7 @@ public class Controller implements Initializable{
     public Stage stage;
     AnchorPane lastOpened2 = new AnchorPane();
     File musicFile;
-    Player player;
+    Player player = new Player();
     boolean musicSubmitted;
 
     public void setStage(Stage stage) {
@@ -114,6 +116,9 @@ public class Controller implements Initializable{
     @FXML
     private Label playlistLabel;
 
+    @FXML
+    private Slider volume;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         pB.setStyle("-fx-accent: Yellow");
@@ -124,6 +129,15 @@ public class Controller implements Initializable{
         addPlaylistMenu.setOpacity(0);
         vP.setDisable(true);
         aM.setDisable(true);
+        volume.setMajorTickUnit(0.1);
+        final double[] volumeValue = new double[1];
+
+        volume.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                volumeValue[0] = volume.getValue();
+            }
+        });
     }
 
     public void addAPlaylist(ActionEvent e) {
@@ -396,7 +410,13 @@ public class Controller implements Initializable{
         System.out.println("playButton");
         playing = !playing;
         LOGGER.info("playing: " + playing);
-        if (playing) player.mp.play();
+        if (playing) {
+            if (player.mp == null) {
+                player.playNext();
+            } else {
+                player.mp.play();
+            }
+        }
         else player.mp.pause();
     }
 

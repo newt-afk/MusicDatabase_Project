@@ -1,5 +1,6 @@
 package Java;
 
+import FXML.Controller;
 import javafx.scene.media.*;
 
 public class Player {
