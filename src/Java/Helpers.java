@@ -70,11 +70,8 @@ public class Helpers {
         Logger rootLogger = Logger.getLogger("");
         try {
             // need try catch in case we can't create the file and write to it
-            Handler filehandler = new FileHandler("test.log");
+            Handler filehandler = new FileHandler("test.log", (1048576 * 30), 1000);
             SimpleFormatter formatter = new SimpleFormatter();
-            // remove default console handlers, we don't need them anymore
-            if (rootLogger.getHandlers()[0] instanceof ConsoleHandler)
-                rootLogger.removeHandler(rootLogger.getHandlers()[0]);
             Logger.getAnonymousLogger().info("Logger created");
 
             filehandler.setFormatter(formatter);

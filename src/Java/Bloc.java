@@ -10,7 +10,7 @@ public class Bloc{
     List<Long> data = new ArrayList<>(), orderSoFar = new LinkedList<>();
     ListIterator<Long> currentPosition = orderSoFar.listIterator();
     private boolean shuffle, smartShuffle, loop;
-    Set<Long> useLinked = new HashSet<>();
+    public final Set<Long> useLinked = new HashSet<>();
 
     // below are just for shuffling and generating the next song to play
     private Queue<Long> scrambled; // purpose changes depending on the shuffle type
@@ -228,6 +228,15 @@ public class Bloc{
             sb.append("ENDDATA\n");
         }
         sb.append("END\n\n");
+        return sb.toString();
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder(name).append('\n');
+        if (!data.isEmpty()) {
+            sb.append("Data: \n");
+            for (long id: data) sb.append('\t').append(id).append('\n');
+        }
         return sb.toString();
     }
 

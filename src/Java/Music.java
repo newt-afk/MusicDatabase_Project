@@ -146,4 +146,14 @@ public class Music{
         ret.append("END\n\n");
         return ret.toString();
     }
+
+    public String toString() {
+        StringBuilder ret = new StringBuilder(String.format("Name: %s\nArtist: %s\nGenre: %s\nFilename: %s\nID: %d\n",
+                name, artist, genre, file.getName(), key));
+        if (!link.isEmpty()) {
+            ret.append("Links: \n");
+            for (long id: link) ret.append('\t').append(id).append('\n');
+        }
+        return ret.toString();
+    }
 }

@@ -32,7 +32,7 @@ public class FileManager {
             String name, artist, genre, filename;
             long key;
             List<Long> linked = new LinkedList<>();
-            while (s.hasNextLine()) {
+            while (s.hasNext()) {
                 linked.clear();
                 s.next();
                 name = s.next();
@@ -82,17 +82,23 @@ public class FileManager {
         Map<String, Bloc> ret = new HashMap<>();
         try {
             Scanner s = new Scanner(blocConf);
-            while (s.hasNextLine()) {
+            while (s.hasNext()) {
                 String name;
                 List<Long> ids = new ArrayList<>();
                 s.next();
                 name = s.next();
-                if (s.next().equals("END")) ret.put(name, new Bloc(name));
+                if (s.next().equals("END")) {
+                    ret.put(name, new Bloc(name));
+                    continue;
+                }
                 while (s.next().equals("ID:")) {
                     ids.add(s.nextLong());
                 }
                 if (!s.next().equals("END")) LOGGER.warning("Missing END token");
                 ret.put(name, new Bloc(name, ids));
+                for (String key: ret.keySet()) {
+                    System.out.println(key + ": " + ret.get(key));
+                }
             }
         }catch (IOException io)  {
             LOGGER.log(Level.SEVERE,"Error reading file", io);
@@ -109,7 +115,7 @@ public class FileManager {
         long ret = 0;
         try {
             Scanner s = new Scanner(stateConf);
-            if (!s.hasNextLine()) return ret;
+            if (!s.hasNext()) return ret;
             s.next();
             ret = s.nextLong();
         }catch (Exception e) {
@@ -130,7 +136,7 @@ public class FileManager {
     }
     public static void saveBlocs(List<Bloc> list) {
         try (FileWriter fw = new FileWriter(blocConf)) {
-            for (Bloc b: list) fw.append(b.toFile());
+            for (Bloc b: list) if (!b.name.equals("Default")) fw.append(b.toFile());
             fw.flush();
         }catch (IOException io) {
             LOGGER.log(Level.SEVERE, "Could not save state of Blocs", io);
