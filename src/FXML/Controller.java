@@ -10,8 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,6 +34,7 @@ public class Controller implements Initializable{
     public boolean loop = false;
     public Stage stage;
     File musicFile;
+    MediaPlayer currentSong;
     boolean musicSubmitted;
 
     public void setStage(Stage stage) {
@@ -101,6 +104,7 @@ public class Controller implements Initializable{
         final ScrollPane[] lastOpened = {new ScrollPane()};
         int y = -20;
         if(!Helpers.blocList().isEmpty()) {
+            LOGGER.log(Level.FINE,"Bloc is not empty");
             for(int i = 0; i < Helpers.blocList().size(); i++) {
 
                 ScrollPane playlistScroll = new ScrollPane();
@@ -138,7 +142,7 @@ public class Controller implements Initializable{
                     }
                 });
                 y+=35;
-                if (Helpers.blocList().get(i).name == "Default") {
+                if (Helpers.blocList().get(i).name.equals("Default")) {
                     playlistNames.setText("All Songs");
                 } else {
                     playlistNames.setText(Helpers.blocList().get(i).name);
@@ -229,15 +233,15 @@ public class Controller implements Initializable{
         String songName = addSongName();
         String artist = addArtist();
         String genre = addGenre();
-        if (Objects.equals(songName, "")) {
+        if (songName.isBlank()) {
             errorMessage = "You have not entered the song name" + "\n";
             error = true;
         }
-        if (Objects.equals(artist, "")) {
+        if (artist.isBlank()) {
             errorMessage = errorMessage + "You have not entered the artist name" + "\n";
             error = true;
         }
-        if (Objects.equals(genre, "")) {
+        if (genre.isBlank()) {
             errorMessage = errorMessage + "You have not entered the genre name" + "\n";
             error = true;
         }
@@ -258,7 +262,9 @@ public class Controller implements Initializable{
     public void playButton(ActionEvent e) {
         System.out.println("playButton");
         playing = !playing;
-        System.out.println(playing);
+        LOGGER.info("playing: " + playing);
+        if (playing) currentSong.play();
+        else currentSong.pause();
     }
 
     public void loop(ActionEvent e) {
@@ -281,10 +287,12 @@ public class Controller implements Initializable{
 
     public void skipForward(ActionEvent e) {
         System.out.println("skipForward");
+        currentSong.seek(new Duration(currentSong.getCurrentTime().toMillis() + 5000));
     }
 
     public void skipBackwards(ActionEvent e) {
         System.out.println("skipBackwards");
+        currentSong.seek(new Duration(currentSong.getCurrentTime().toMillis() - 5000));
     }
 
     public void addMusic(ActionEvent e) {
