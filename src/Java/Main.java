@@ -8,10 +8,16 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import Java.Player;
+
+import java.io.File;
+import java.io.FileReader;
+
 public class Main extends Application{
     public static void main(String[] args) {
         Helpers.setupLogger();
@@ -31,8 +37,17 @@ public class Main extends Application{
         Controller controller = (Controller)loader.getController();
         controller.setStage(stage);
 
-        Helpers.addBloc(new Bloc("Joshua"));
-        Helpers.addBloc(new Bloc("Testingashbdiaubsdha"));
+        Helpers.addBloc(new Bloc("Halloween"));
+        Helpers.addBloc(new Bloc("X-Mas"));
+        System.out.println(Helpers.blocList().toString());
+
+        File file1 = new File("src/Media/Music/Marble Soda.mp3");
+        File file2 = new File("src/Media/Music/Fantasie Impromptu.mp3");
+        Helpers.addMusic(new Music("test1", " ", " ", file1));
+        Helpers.addMusic(new Music("Fantasie", "no clue", "pop?", file2));
+        System.out.println(Helpers.getBloc("Default").getMusic().toString());
+
+        stage.show();
     }
 
     @Override

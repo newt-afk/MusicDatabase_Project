@@ -240,9 +240,8 @@ public class Bloc{
         StringBuilder sb = new StringBuilder(name).append('\n');
         if (!data.isEmpty()) {
             sb.append("Data: \n");
-            for (long id: data) sb.append('\t').append(id).append('\n');
+            for (long id : data) sb.append('\t').append(id).append('\n');
         }
         return sb.toString();
     }
-
 }

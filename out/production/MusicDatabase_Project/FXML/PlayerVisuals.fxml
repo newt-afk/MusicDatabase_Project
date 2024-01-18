@@ -58,7 +58,7 @@
          <children>
             <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#addMusic" text="Add Music" />
             <Button fx:id="viewPlaylist" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" onAction="#viewAlbum" text="Playlists" />
-            <Button layoutX="14.0" layoutY="88.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="summon" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" text="Button" />
             <Button layoutX="14.0" layoutY="125.0" mnemonicParsing="false" text="Button" />
          </children>
       </AnchorPane>
@@ -69,17 +69,8 @@
                   <AnchorPane fx:id="playlistList" prefHeight="514.0" prefWidth="112.0" style="-fx-background-color: grey;" />
                </content>
             </ScrollPane>
-            <ScrollPane fx:id="scroll11" hbarPolicy="NEVER" hmin="1.0" layoutX="137.0" layoutY="13.0" prefHeight="234.0" prefWidth="246.0" style="-fx-background-color: grey; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;" vbarPolicy="NEVER">
-               <content>
-                  <AnchorPane prefHeight="514.0" prefWidth="245.0" style="-fx-background-color: grey; -fx-background-radius: 0;">
-                     <children>
-                        <Button fx:id="playlist1" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="Playlist 1" />
-                        <Button layoutX="179.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </ScrollPane>
             <Label layoutX="137.0" layoutY="255.0" text="Label" />
+            <AnchorPane fx:id="songDisplay" layoutX="123.0" layoutY="13.0" prefHeight="255.0" prefWidth="266.0" />
          </children>
       </AnchorPane>
    </children>
