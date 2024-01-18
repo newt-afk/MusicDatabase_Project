@@ -20,7 +20,7 @@
             <ColorAdjust brightness="-0.17" />
          </effect>
          <children>
-            <AnchorPane layoutX="120.0" layoutY="52.0" prefHeight="44.0" prefWidth="280.0" style="-fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;">
+            <AnchorPane layoutX="120.0" layoutY="61.0" prefHeight="44.0" prefWidth="280.0" style="-fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;">
                <children>
                   <Button layoutX="47.0" layoutY="10.0" mnemonicParsing="false" onAction="#skipBackwards" text="&lt; &lt; &lt;" />
                   <Button fx:id="playB" layoutX="120.0" layoutY="6.0" mnemonicParsing="false" onAction="#playButton" prefHeight="33.0" prefWidth="40.0" style="-fx-background-color: black;">
@@ -40,15 +40,16 @@
                   <CheckBox layoutX="14.0" layoutY="40.0" mnemonicParsing="false" onAction="#shuffle" text="Shuffle" textFill="WHITE" />
                   <CheckBox layoutX="12.0" layoutY="66.0" mnemonicParsing="false" onAction="#shuffle2" prefHeight="17.0" prefWidth="77.0" text="Shuffle +" textFill="WHITE" />
                </children></AnchorPane>
-            <ProgressBar fx:id="pB" layoutX="120.0" layoutY="18.0" prefHeight="18.0" prefWidth="286.0" progress="0.01" />
+            <ProgressBar fx:id="pB" layoutX="120.0" layoutY="18.0" prefHeight="18.0" prefWidth="280.0" progress="0.01" />
             <AnchorPane layoutX="14.0" layoutY="17.0" prefHeight="87.0" prefWidth="92.0" style="-fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10;">
                <children>
-                  <Label layoutX="15.0" layoutY="6.0" text="Song Name" textFill="#fffdfd" />
-                  <Label layoutX="15.0" layoutY="31.0" text="Album" textFill="WHITE" />
-                  <Label layoutX="14.0" layoutY="57.0" text="Artist" textFill="WHITE" />
+                  <Label fx:id="songNameGui" layoutX="10.0" layoutY="6.0" prefHeight="17.0" prefWidth="73.0" text="Song Name" textFill="#fffdfd" />
+                  <Label fx:id="albumGui" layoutX="10.0" layoutY="31.0" prefHeight="17.0" prefWidth="73.0" text="Album" textFill="WHITE" />
+                  <Label fx:id="artistGui" layoutX="8.0" layoutY="57.0" prefHeight="17.0" prefWidth="77.0" text="Artist" textFill="WHITE" />
                </children>
             </AnchorPane>
             <Slider fx:id="volume" layoutX="435.0" layoutY="14.0" orientation="VERTICAL" prefHeight="87.0" prefWidth="14.0" />
+            <Label fx:id="timerLabel" layoutX="120.0" layoutY="36.0" prefHeight="25.0" prefWidth="149.0" text="Current Time / Duration" textAlignment="CENTER" textFill="WHITE" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="aM" layoutX="202.0" layoutY="12.0" opacity="0.0" prefHeight="280.0" prefWidth="403.0" style="-fx-background-color: grey; -fx-background-radius: 10px;">
@@ -92,8 +93,10 @@
       </AnchorPane>
       <AnchorPane fx:id="lP" layoutX="201.0" layoutY="12.0" prefHeight="280.0" prefWidth="414.0" style="-fx-background-color: grey; -fx-background-radius: 10px;">
          <children>
-            <ScrollPane fx:id="addLinkScroll" hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="254.0" prefWidth="149.0" vbarPolicy="NEVER" />
+            <ScrollPane fx:id="addLinkScroll" hbarPolicy="NEVER" layoutX="14.0" layoutY="13.0" prefHeight="205.0" prefWidth="149.0" vbarPolicy="NEVER" />
             <ScrollPane fx:id="removeLinkScroll" hbarPolicy="NEVER" layoutX="183.0" layoutY="14.0" prefHeight="254.0" prefWidth="215.0" vbarPolicy="NEVER" />
+            <Button layoutX="14.0" layoutY="233.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="63.0" text="Button" />
+            <Button layoutX="100.0" layoutY="233.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="63.0" text="Button" />
          </children>
       </AnchorPane>
    </children>

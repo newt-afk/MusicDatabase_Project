@@ -1,9 +1,7 @@
 package FXML;
 
-import Java.Bloc;
-import Java.Helpers;
-import Java.Main;
-import Java.Player;
+import Java.*;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -140,6 +138,9 @@ public class Controller implements Initializable{
     @FXML
     private Label artistGui;
 
+    @FXML
+    private Label timerLabel;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         pB.setStyle("-fx-accent: Yellow");
@@ -163,6 +164,7 @@ public class Controller implements Initializable{
                 System.out.println(player.mp.getVolume());
             }
         });
+
     }
 
 
@@ -179,7 +181,12 @@ public class Controller implements Initializable{
     }
 
     public void display() {
-        System.out.println(player.mp.toString());
+        songNameGui.setMaxWidth(100);
+        songNameGui.setText(player.m.getName());
+        albumGui.setMaxWidth(100);
+        albumGui.setText(player.bloc.name);
+        artistGui.setMaxWidth(100);
+        artistGui.setText(player.m.getArtist());
     }
 
     public void exitFromPlaylistMenu() {
@@ -255,6 +262,7 @@ public class Controller implements Initializable{
 
                 ScrollPane playlistScroll = new ScrollPane();
                 playlistScroll.setMinHeight(205);
+                playlistScroll.setMaxHeight(206);
                 playlistScroll.setMinWidth(250);
                 playlistScroll.setStyle("-fx-background-color: Grey");
                 playlistScroll.setLayoutX(0);
@@ -334,6 +342,7 @@ public class Controller implements Initializable{
                             playlistSongs.setText(Helpers.blocList().get(i).getMusic().get(j).getName());
                             playlistSongs.setLayoutY(altY);
                             playlistSongs.setLayoutX(15);
+                            playlistSongs.setMaxWidth(100);
                             playlistSongsContainer.getChildren().add(playlistSongs);
                             System.out.println(Helpers.blocList().get(i).getMusic().get(j).getName());
 
@@ -409,6 +418,19 @@ public class Controller implements Initializable{
         }
     }
 
+    public void progressBar() {
+        System.out.println("Hello2");
+
+        player.mp.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+            @Override
+            public void changed(ObservableValue<? extends Duration> observableValue, Duration duration, Duration t1) {
+                pB.setProgress(player.mp.getCurrentTime().toSeconds()/player.mp.getTotalDuration().toSeconds());
+                String a = player.mp.getCurrentTime().toSeconds() + " / " + player.mp.getTotalDuration().toSeconds();
+                timerLabel.setText(a);
+            }
+        });
+    }
+
     public String addSongName(){
         return songName.getText();
     }
@@ -470,6 +492,7 @@ public class Controller implements Initializable{
             if (player.mp == null) player.playNext();
             else player.mp.play();
             display();
+            progressBar();
         }
         else if (player.mp != null) player.mp.pause();
     }
@@ -495,13 +518,13 @@ public class Controller implements Initializable{
     public void skipForward(ActionEvent e) {
         System.out.println("skipForward");
         if (player.mp == null) return;
-        player.playNext();
+        player.playNext();progressBar();display();
     }
 
     public void skipBackwards(ActionEvent e) {
         System.out.println("skipBackwards");
         if (player.mp == null) return;
-        player.playPrev();
+        player.playPrev(); progressBar();display();
     }
 
     public void addMusic(ActionEvent e) {

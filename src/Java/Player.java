@@ -5,7 +5,7 @@ import javafx.scene.media.*;
 
 public class Player {
     public MediaPlayer mp;
-    private Bloc bloc;
+    public Bloc bloc;
     public Music m;
     public Player(Bloc bloc) {
         this.bloc = bloc;
@@ -15,6 +15,7 @@ public class Player {
         System.out.println(bloc);
     }
     public void playNext() {
+        Controller control = new Controller();
         double vol = -1;
         if (mp != null) vol = mp.getVolume();
         disposeOfPlayer();
