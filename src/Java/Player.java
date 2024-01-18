@@ -22,7 +22,7 @@ class Player {
     public Player() {
         this.bloc = Helpers.getBloc("Default");
     }
-    void playNext() {
+    public void playNext() {
         disposeOfPlayer();
         Music m = bloc.next();
         if (m == null) return; //end of playlist, and no loop
