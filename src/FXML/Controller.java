@@ -411,13 +411,10 @@ public class Controller implements Initializable{
         playing = !playing;
         LOGGER.info("playing: " + playing);
         if (playing) {
-            if (player.mp == null) {
-                player.playNext();
-            } else {
-                player.mp.play();
-            }
+            if (player.mp == null) player.playNext();
+            else player.mp.play();
         }
-        else player.mp.pause();
+        else if (player.mp != null) player.mp.pause();
     }
 
     public void loop(ActionEvent e) {
@@ -440,12 +437,14 @@ public class Controller implements Initializable{
 
     public void skipForward(ActionEvent e) {
         System.out.println("skipForward");
-        player.mp.seek(new Duration(player.mp.getCurrentTime().toMillis() + 5000));
+        if (player.mp == null) return;
+        player.playNext();
     }
 
     public void skipBackwards(ActionEvent e) {
         System.out.println("skipBackwards");
-        player.mp.seek(new Duration(player.mp.getCurrentTime().toMillis() - 5000));
+        if (player.mp == null) return;
+        player.playPrev();
     }
 
     public void addMusic(ActionEvent e) {

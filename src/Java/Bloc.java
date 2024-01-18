@@ -120,13 +120,16 @@ public class Bloc{
     public Music next()  {
         if (data.isEmpty()) return null;
         // returns music as we go forward in time
-        if (orderSoFar.size() == currentPosition) orderSoFar.add(nextMusicGenerator());
+        if (orderSoFar.size() <= currentPosition) {
+            orderSoFar.add(nextMusicGenerator());
+            currentPosition = orderSoFar.size() - 1;
+        }
 
         long nextThing = orderSoFar.get(currentPosition++);
         if (!Helpers.hasMusicKey(nextThing)) {
             purge(nextThing);
         }
-        try {return Helpers.getMusic(orderSoFar.get(++currentPosition));}
+        try {return Helpers.getMusic(nextThing);}
         catch (Exception ignored) {return null;} //shouldn't ever happen
     }
 
@@ -156,7 +159,7 @@ public class Bloc{
                 posOnData = (posOnData + 1) % data.size();
                 return ret;
             }else {
-                return posOnData >= data.size()? null: data.get(posOnData);
+                return posOnData >= data.size()? null: data.get(posOnData++);
             }
         }
     }

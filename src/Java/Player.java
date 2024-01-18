@@ -11,20 +11,27 @@ public class Player {
     }
     public Player() {
         this.bloc = Helpers.getBloc("Default");
+        System.out.println(bloc);
     }
     public void playNext() {
+        double vol = -1;
+        if (mp != null) vol = mp.getVolume();
         disposeOfPlayer();
         Music m = bloc.next();
         if (m == null) return; //end of playlist, and no loop
         mp = m.toMediaPlayer();
+        if (vol != -1) mp.setVolume(vol);
         mp.play();
         mp.setOnEndOfMedia(this::playNext);
     }
     public void playPrev() {
+        double vol = -1;
+        if (mp != null) vol = mp.getVolume();
         disposeOfPlayer();
         Music m = bloc.prev();
         if (m == null) return;
         mp = m.toMediaPlayer();
+        if (vol != -1) mp.setVolume(vol);
         mp.play();
         mp.setOnEndOfMedia(this::playNext);
     }

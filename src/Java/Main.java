@@ -23,8 +23,6 @@ import java.io.FileReader;
 public class Main extends Application{
     public static void main(String[] args) {
         Helpers.setupLogger();
-        Player player = new Player();
-        player.playNext();
         launch(args);
     }
 
