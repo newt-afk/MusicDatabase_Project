@@ -121,6 +121,8 @@ public class Controller implements Initializable{
         errorAddition.setStyle("-fx-text-fill: Red");
         vP.setOpacity(0);
         addPlaylistMenu.setOpacity(0);
+        vP.setDisable(true);
+        aM.setDisable(true);
     }
 
     public void addAPlaylist(ActionEvent e) {
@@ -304,17 +306,21 @@ public class Controller implements Initializable{
 
     public void viewAlbum(ActionEvent e) {
         System.out.println("viewPlaylist");
-        if (lastOpened2 != vP) {
-            if (lastOpened2 != null){
+        if (lastOpened2 == vP) {
+            System.out.println("t");
+            vP.setOpacity(0);
+            vP.setDisable(true);
+            lastOpened2 = null;
+        } else {
+            System.out.println("f");
+            if (lastOpened2 != null) {
                 lastOpened2.setOpacity(0);
+                lastOpened2.setDisable(true);
             }
+            vP.setDisable(false);
             vP.setOpacity(1);
             lastOpened2 = vP;
-        } else {
-            vP.setOpacity(0);
-            lastOpened2 = null;
         }
-        viewPlaylists();
     }
 
     public String addSongName(){
@@ -408,16 +414,20 @@ public class Controller implements Initializable{
 
     public void addMusic(ActionEvent e) {
         System.out.println("addMusic");
-        System.out.println("viewPlaylist");
-        if (lastOpened2 != aM) {
-            if (lastOpened2 != null){
+        if (lastOpened2 == aM) {
+            System.out.println("t");
+            aM.setOpacity(0);
+            aM.setDisable(true);
+            lastOpened2 = null;
+        } else {
+            System.out.println("f");
+            if (lastOpened2 != null) {
                 lastOpened2.setOpacity(0);
+                lastOpened2.setDisable(true);
             }
+            aM.setDisable(false);
             aM.setOpacity(1);
             lastOpened2 = aM;
-        } else {
-            aM.setOpacity(0);
-            lastOpened2 = null;
         }
     }
 }
