@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 public class Bloc{
     private static final Logger LOGGER = Logger.getLogger(Bloc.class.getName());
     public String name;
-    List<Long> data = new ArrayList<>(), orderSoFar = new LinkedList<>();
-    ListIterator<Long> currentPosition = orderSoFar.listIterator();
+    List<Long> data = new ArrayList<>(), orderSoFar = new ArrayList<>();
+    int currentPosition = 0;
     private boolean shuffle, smartShuffle, loop;
     public final Set<Long> useLinked = new HashSet<>();
 
@@ -84,7 +84,7 @@ public class Bloc{
 
     public void reset() { //moves the next track to be played back to the front.
         orderSoFar.clear();
-        currentPosition = orderSoFar.listIterator();
+        currentPosition = 0;
         posOnData = 0;
         scrambled.clear();
         smartQueue.clear();
@@ -98,7 +98,8 @@ public class Bloc{
             smartQueue.removeIf(x -> x == id);
             scrambled.removeIf(x -> x == id);
         }
-        // can't edit the current playing list, but that's fine. The iterator will remove them as they come up.
+        while (orderSoFar.get(currentPosition) == id && currentPosition > 0) currentPosition--;
+        orderSoFar.removeIf(x -> x ==id);
     }
     public void reorder(int pos1, int pos2) {
         // have to use positions, because of potential duplicates in the link.
@@ -119,20 +120,14 @@ public class Bloc{
     public Music next()  {
         if (data.isEmpty()) return null;
         // returns music as we go forward in time
-        if (!currentPosition.hasNext()) orderSoFar.add(nextMusicGenerator());
+        if (orderSoFar.size() == currentPosition) orderSoFar.add(nextMusicGenerator());
 
-        long nextThing = currentPosition.next();
-        if (Helpers.hasMusicKey(nextThing)) {
-            try {
-                if (useLinked.contains(nextThing))
-                    data.addAll(Helpers.getMusic(nextThing).getLinked());
-                return Helpers.getMusic(nextThing);
-            } catch (Exception ignored) {return null;} // won't happen, getMusic triggers on not having the thing.
+        long nextThing = orderSoFar.get(currentPosition++);
+        if (!Helpers.hasMusicKey(nextThing)) {
+            purge(nextThing);
         }
-        else {
-            currentPosition.remove();
-            return next();
-        }
+        try {return Helpers.getMusic(orderSoFar.get(++currentPosition));}
+        catch (Exception ignored) {return null;} //shouldn't ever happen
     }
 
     private Long nextMusicGenerator() {
@@ -169,18 +164,14 @@ public class Bloc{
     public Music prev() {
         if (data.isEmpty()) return null;
         // returns music as we go backward in time
-        long prevThing = currentPosition.previous();
-        if (!currentPosition.hasPrevious()) {
-            LOGGER.warning("Tried to go too far back in Bloc");
-            return null;
-        }else {
-            if (Helpers.hasMusicKey(prevThing))
-                try {return Helpers.getMusic(prevThing);}
-            catch (Exception e) {return null;}
-            else {
-                currentPosition.remove();
-                return prev();
-            }
+        if (currentPosition == 0) return null;
+        long prevThing = orderSoFar.get(--currentPosition);
+        if (Helpers.hasMusicKey(prevThing))
+            try {return Helpers.getMusic(prevThing);}
+        catch (Exception e) {return null;}
+        else {
+            purge(prevThing);
+            return prev();
         }
     }
     Music query(String trait) {
