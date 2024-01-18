@@ -60,6 +60,18 @@ public class Bloc{
         this.loop = loop;
     }
 
+    public List<Music> getMusic() {
+        List<Music> stuff = new LinkedList<>();
+        for (long i: data) {
+            try {
+                stuff.add(Helpers.getMusic(i));
+            }catch (Exception e) {
+                purge(i);
+            }
+        }
+        return Collections.unmodifiableList(stuff);
+    }
+
     public void reset() { //moves the next track to be played back to the front.
         orderSoFar.clear();
         currentPosition = orderSoFar.listIterator();
@@ -76,6 +88,7 @@ public class Bloc{
             smartQueue.removeIf(x -> x == id);
             scrambled.removeIf(x -> x == id);
         }
+        // can't edit the current playing list, but that's fine. The iterator will remove them as they come up.
     }
     public void reorder(int pos1, int pos2) {
         // have to use positions, because of potential duplicates in the link.
@@ -201,13 +214,15 @@ public class Bloc{
     }
 
     public String toFile() {
+        if (name.equals("Default")) return "";
+        //Default is the master song list, we shouldn't record it. It will be generated
         StringBuilder sb = new StringBuilder("Name: " + name + "\n");
         if (!data.isEmpty()) {
-            sb.append("START IDS");
+            sb.append("STARTDATA");
             for (long l : data) {
                 sb.append("ID: ").append(l).append("\n");
             }
-            sb.append("END IDS");
+            sb.append("ENDDATA");
         }
         sb.append("END");
         return sb.toString();
