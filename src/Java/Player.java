@@ -55,6 +55,4 @@ public class Player {
     public void setLoop(boolean loop) {
         bloc.setLoop(loop);
     }
-
-
 }

@@ -125,6 +125,21 @@ public class Controller implements Initializable{
     @FXML
     private AnchorPane lP;
 
+    @FXML
+    private Button addHeadLink;
+
+    @FXML
+    private Button removeHeadLink;
+
+    @FXML
+    private Label songNameGui;
+
+    @FXML
+    private  Label albumGui;
+
+    @FXML
+    private Label artistGui;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         pB.setStyle("-fx-accent: Yellow");
@@ -161,6 +176,10 @@ public class Controller implements Initializable{
 
     public String getPlaylistName() {
         return playlistNameEnter.getText();
+    }
+
+    public void display() {
+        System.out.println(player.mp.toString());
     }
 
     public void exitFromPlaylistMenu() {
@@ -450,6 +469,7 @@ public class Controller implements Initializable{
         if (playing) {
             if (player.mp == null) player.playNext();
             else player.mp.play();
+            display();
         }
         else if (player.mp != null) player.mp.pause();
     }
@@ -517,6 +537,26 @@ public class Controller implements Initializable{
             lP.setDisable(false);
             lP.setOpacity(1);
             lastOpened2 = lP;
+            linkedMusic();
+        }
+    }
+
+    public void linkedMusic() {
+        AnchorPane paneHead = new AnchorPane();
+        paneHead.setStyle("-fx-background-color: grey");
+        paneHead.setMinSize(300,300);
+        addLinkScroll.setContent(paneHead);
+        stage.show();
+        int y = -20;
+        for (int i = 0; Helpers.getBloc("Default").getMusic().size() > i; i++) {
+            int a = 1;
+            Long l = Long.parseLong(String.valueOf(a));
+            if (1 < Helpers.getBloc("Default").getMusic().get(i).getLinked().size()) {
+                Label head = new Label();
+                head.setText(Helpers.getBloc("Default").getMusic().get(i).getName());
+                y += 35;
+                head.setLayoutY(y);
+            }
         }
     }
 }
