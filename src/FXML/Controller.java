@@ -5,10 +5,7 @@ import Java.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -21,6 +18,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable{
     public double progress;
     public boolean opacity;
+    public boolean opacity2;
     public boolean playing = false;
     public boolean shuffle = false;
     public boolean shuffleplus = false;
@@ -32,6 +30,18 @@ public class Controller implements Initializable{
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+
+    @FXML
+    private ScrollPane scroll1;
+
+    @FXML
+    private Button playlist;
+
+    @FXML
+    private AnchorPane vP;
+
+    @FXML
+    private Button viewPlaylist;
 
     @FXML
     private ProgressBar pB;
@@ -63,6 +73,22 @@ public class Controller implements Initializable{
         aM.setOpacity(0);
         fileSelect.setOpacity(1);
         errorAddition.setStyle("-fx-text-fill: Red");
+        vP.setOpacity(0);
+    }
+
+    public void viewAlbum(ActionEvent e) {
+        System.out.println("viewPlaylist");
+        if (opacity == true) {
+            opacity = false;
+            aM.setOpacity(0);
+        }
+        if (opacity2 == false) {
+            opacity2 = true;
+            vP.setOpacity(1);
+        } else {
+            opacity2 = false;
+            vP.setOpacity(0);
+        }
     }
 
     public String addSongName(){
@@ -168,6 +194,10 @@ public class Controller implements Initializable{
 
     public void addMusic(ActionEvent e) {
         System.out.println("addMusic");
+        if (opacity2 == true) {
+            opacity2 = false;
+            vP.setOpacity(0);
+        }
         if (opacity == false) {
             opacity = true;
             aM.setOpacity(1);
