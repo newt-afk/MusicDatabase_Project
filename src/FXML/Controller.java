@@ -143,7 +143,7 @@ public class Controller implements Initializable{
 
     public void addingPlaylist() {
         String playlistName = getPlaylistName();
-        if (playlistName == "") {
+        if (playlistName.isBlank()) {
             playlistLabel.setText("Please enter a name.");
             return;
         }
