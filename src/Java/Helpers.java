@@ -75,7 +75,7 @@ public class Helpers {
             // remove default console handlers, we don't need them anymore
             if (rootLogger.getHandlers()[0] instanceof ConsoleHandler)
                 rootLogger.removeHandler(rootLogger.getHandlers()[0]);
-            rootLogger.info("Logger created");
+            Logger.getAnonymousLogger().info("Logger created");
 
             filehandler.setFormatter(formatter);
             rootLogger.addHandler(filehandler);

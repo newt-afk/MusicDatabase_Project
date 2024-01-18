@@ -23,7 +23,7 @@ public class Bloc{
         this.name = nameGen();
         this.data.addAll(data);
     }
-    public Bloc(String name) {this.name = nameGen();}
+    public Bloc(String name) {this.name = name;}
     public Bloc(String name, Collection<Long> data) {
         this.name = name;
         this.data.addAll(data);
