@@ -6,6 +6,7 @@ import javafx.scene.media.*;
 public class Player {
     public MediaPlayer mp;
     private Bloc bloc;
+    public Music m;
     public Player(Bloc bloc) {
         this.bloc = bloc;
     }
@@ -17,7 +18,7 @@ public class Player {
         double vol = -1;
         if (mp != null) vol = mp.getVolume();
         disposeOfPlayer();
-        Music m = bloc.next();
+        m = bloc.next();
         if (m == null) return; //end of playlist, and no loop
         mp = m.toMediaPlayer();
         if (vol != -1) mp.setVolume(vol);
@@ -28,7 +29,7 @@ public class Player {
         double vol = -1;
         if (mp != null) vol = mp.getVolume();
         disposeOfPlayer();
-        Music m = bloc.prev();
+        m = bloc.prev();
         if (m == null) return;
         mp = m.toMediaPlayer();
         if (vol != -1) mp.setVolume(vol);
