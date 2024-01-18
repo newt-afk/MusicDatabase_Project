@@ -2,10 +2,12 @@ package Java;
 
 import FXML.Controller;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
@@ -17,7 +19,8 @@ public class Main extends Application{
     }
 
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/FXML/PlayerVisuals.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PlayerVisuals.fxml"));
+        Parent root = loader.load();
         Image icon = new Image(getClass().getResource("/Media/podcast-music-microphone-podcasting-desk-plant-social-media-office.png").toString());
         stage.getIcons().add(icon);
         stage.setTitle("ZA Music Player");
@@ -25,6 +28,7 @@ public class Main extends Application{
         stage.setResizable(false);
         stage.show();
 
-
+        Controller controller = (Controller)loader.getController();
+        controller.setStage(stage);
     }
 }

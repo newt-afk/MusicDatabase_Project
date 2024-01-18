@@ -1,0 +1,8 @@
+ public void increaseProgress() {
+        Timeline ones = new Timeline(new KeyFrame(Duration.seconds(1), this::doStep));
+        pB.setProgress(this.progress);
+    }
+
+    private void doStep(ActionEvent actionEvent) {
+        this.progress+=0.1;
+    }
