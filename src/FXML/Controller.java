@@ -90,9 +90,6 @@ public class Controller implements Initializable{
     private AnchorPane playlistList;
 
     @FXML
-    private Button summon;
-
-    @FXML
     private AnchorPane songDisplay;
 
     @FXML
@@ -119,6 +116,15 @@ public class Controller implements Initializable{
     @FXML
     private Slider volume;
 
+    @FXML
+    private ScrollPane addLinkScroll;
+
+    @FXML
+    private ScrollPane removeLinkScroll;
+
+    @FXML
+    private AnchorPane lP;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         pB.setStyle("-fx-accent: Yellow");
@@ -131,14 +137,20 @@ public class Controller implements Initializable{
         aM.setDisable(true);
         volume.setMajorTickUnit(0.1);
         final double[] volumeValue = new double[1];
+        lP.setOpacity(0);
+        lP.setDisable(true);
 
         volume.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 volumeValue[0] = volume.getValue();
+                player.mp.setVolume(volumeValue[0]);
+                System.out.println(player.mp.getVolume());
             }
         });
     }
+
+
 
     public void addAPlaylist(ActionEvent e) {
         vP.setOpacity(0.5);
@@ -181,19 +193,34 @@ public class Controller implements Initializable{
         playlistBlocs.setLayoutY(0);
         playlistBlocs.setOpacity(1);
 
-        final ScrollPane[] lastOpened = {new ScrollPane()};
+        final ScrollPane[][] lastOpened = {{new ScrollPane()}};
         final CheckBox[] lastOpened3 = {new CheckBox()};
+        final Button[] lastOpened4 = {new Button()};
         int y = -20;
 
         System.out.println(Helpers.blocList().isEmpty());
         if(!Helpers.blocList().isEmpty()) {
             LOGGER.log(Level.FINE,"Bloc is not empty");
             for(int i = 0; i < Helpers.blocList().size(); i++) {
+                int blockNum = i;
+                Button playPlaylist = new Button("Select Playlist");
+                playPlaylist.setLayoutX(200);
+                playPlaylist.setLayoutY(230);
+
+                playPlaylist.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        player.setBloc(Helpers.blocList().get(blockNum));
+                        System.out.println("Select Playlist");
+                    }
+                });
+
+                playPlaylist.setOpacity(0);
 
                 CheckBox check = new CheckBox("Link Tracks");
                 check.setLayoutX(300);
                 check.setLayoutY(230);
-                int blockNum = i;
+
                 check.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
@@ -203,6 +230,7 @@ public class Controller implements Initializable{
                     }
                 });
                 check.setOpacity(0);
+                vP.getChildren().add(playPlaylist);
                 vP.getChildren().add(check);
                 stage.show();
 
@@ -234,25 +262,32 @@ public class Controller implements Initializable{
                 playlistNames.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        if (lastOpened[0] == playlistScroll) {
+                        if (lastOpened[0][0] == playlistScroll) {
                             playlistScroll.setOpacity(0);
                             playlistScroll.setDisable(true);
                             check.setOpacity(0);
                             check.setDisable(true);
-                            lastOpened[0] = null;
+                            playPlaylist.setOpacity(0);
+                            playPlaylist.setDisable(true);
+                            lastOpened[0][0] = null;
                         } else {
-                            if (lastOpened[0] != null) {
-                                lastOpened[0].setOpacity(0);
-                                lastOpened[0].setDisable(true);
+                            if (lastOpened[0][0] != null) {
+                                lastOpened[0][0].setOpacity(0);
+                                lastOpened[0][0].setDisable(true);
                                 lastOpened3[0].setOpacity(0);
                                 lastOpened3[0].setDisable(true);
+                                lastOpened4[0].setOpacity(0);
+                                lastOpened4[0].setDisable(true);
                             }
                             playlistScroll.setDisable(false);
                             playlistScroll.setOpacity(1);
-                            lastOpened[0] = playlistScroll;
+                            lastOpened[0][0] = playlistScroll;
                             check.setDisable(false);
                             check.setOpacity(1);
                             lastOpened3[0] = check;
+                            playPlaylist.setDisable(false);
+                            playPlaylist.setOpacity(1);
+                            lastOpened4[0] = playPlaylist;
                         }
                         stage.show();
                     }
@@ -286,15 +321,7 @@ public class Controller implements Initializable{
                             Button delete = new Button();
                             int blocRemoveInt = i;
                             int songRemoveInt = j;
-                            delete.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    Helpers.blocList().get(blocRemoveInt).removeSong(songRemoveInt);
-                                    delete.setOpacity(0);
-                                    playlistSongs.setOpacity(0);
 
-                                }
-                            });
                             delete.setText("Remove");
                             delete.setLayoutY(altY);
                             delete.setLayoutX(175);
@@ -315,6 +342,16 @@ public class Controller implements Initializable{
                                     });
                                 }
                             }
+
+                        delete.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                Helpers.blocList().get(blocRemoveInt).removeSong(songRemoveInt);
+                                delete.setOpacity(0);
+                                playlistSongs.setOpacity(0);
+                                addToPlaylists.setOpacity(0);
+                            }
+                        });
                             addToPlaylists.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
@@ -463,6 +500,23 @@ public class Controller implements Initializable{
             aM.setDisable(false);
             aM.setOpacity(1);
             lastOpened2 = aM;
+        }
+    }
+
+    public void editLinkedMusic(ActionEvent e) {
+        System.out.println("linkedMusic");
+        if (lastOpened2 == lP) {
+            lP.setOpacity(0);
+            lP.setDisable(true);
+            lastOpened2 = null;
+        } else {
+            if (lastOpened2 != null) {
+                lastOpened2.setOpacity(0);
+                lastOpened2.setDisable(true);
+            }
+            lP.setDisable(false);
+            lP.setOpacity(1);
+            lastOpened2 = lP;
         }
     }
 }

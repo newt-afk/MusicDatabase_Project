@@ -23,7 +23,7 @@
             <AnchorPane layoutX="120.0" layoutY="52.0" prefHeight="44.0" prefWidth="280.0" style="-fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;">
                <children>
                   <Button layoutX="47.0" layoutY="10.0" mnemonicParsing="false" onAction="#skipBackwards" text="&lt; &lt; &lt;" />
-                  <Button fx:id="playB" layoutX="111.0" layoutY="6.0" mnemonicParsing="false" onAction="#playButton" prefHeight="33.0" prefWidth="40.0" style="-fx-background-color: black;">
+                  <Button fx:id="playB" layoutX="120.0" layoutY="6.0" mnemonicParsing="false" onAction="#playButton" prefHeight="33.0" prefWidth="40.0" style="-fx-background-color: black;">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -32,7 +32,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button layoutX="170.0" layoutY="10.0" mnemonicParsing="false" onAction="#skipForward" text="&gt; &gt; &gt;" />
+                  <Button layoutX="183.0" layoutY="10.0" mnemonicParsing="false" onAction="#skipForward" text="&gt; &gt; &gt;" />
                </children></AnchorPane>
             <AnchorPane layoutX="474.0" layoutY="12.0" prefHeight="97.0" prefWidth="101.0" style="-fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10;">
                <children>
@@ -64,11 +64,10 @@
          <children>
             <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#addMusic" text="Add Music" />
             <Button fx:id="viewPlaylist" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" onAction="#viewAlbum" text="Playlists" />
-            <Button fx:id="summon" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" text="Linked Music" />
-            <Button layoutX="14.0" layoutY="125.0" mnemonicParsing="false" text="Button" />
+            <Button layoutX="14.0" layoutY="88.0" mnemonicParsing="false" onAction="#editLinkedMusic" text="Linked Music" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="vP" layoutX="202.0" layoutY="12.0" prefHeight="280.0" prefWidth="403.0" style="-fx-background-color: grey; -fx-background-radius: 10px;">
+      <AnchorPane fx:id="vP" layoutX="202.0" layoutY="12.0" opacity="0.0" prefHeight="280.0" prefWidth="403.0" style="-fx-background-color: grey; -fx-background-radius: 10px;">
          <children>
             <ScrollPane fx:id="scroll1" hbarPolicy="NEVER" hmin="1.0" layoutX="14.0" layoutY="13.0" prefHeight="205.0" prefWidth="111.0" style="-fx-background-color: grey; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10;" vbarPolicy="NEVER" />
             <AnchorPane fx:id="songDisplay" layoutX="135.0" layoutY="13.0" prefHeight="205.0" prefWidth="254.0" />
@@ -89,6 +88,12 @@
                </font>
             </Label>
             <TextField fx:id="playlistNameEnter" alignment="CENTER" layoutX="37.0" layoutY="25.0" promptText="Enter Playlist Name" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="lP" layoutX="201.0" layoutY="12.0" prefHeight="280.0" prefWidth="414.0" style="-fx-background-color: grey; -fx-background-radius: 10px;">
+         <children>
+            <ScrollPane fx:id="addLinkScroll" hbarPolicy="NEVER" layoutX="14.0" layoutY="14.0" prefHeight="254.0" prefWidth="149.0" vbarPolicy="NEVER" />
+            <ScrollPane fx:id="removeLinkScroll" hbarPolicy="NEVER" layoutX="183.0" layoutY="14.0" prefHeight="254.0" prefWidth="215.0" vbarPolicy="NEVER" />
          </children>
       </AnchorPane>
    </children>
