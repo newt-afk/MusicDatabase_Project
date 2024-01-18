@@ -574,7 +574,7 @@ public class Controller implements Initializable{
         for (int i = 0; Helpers.getBloc("Default").getMusic().size() > i; i++) {
             int a = 1;
             Long l = Long.parseLong(String.valueOf(a));
-            if (1 < Helpers.getBloc("Default").getMusic().get(i).getLinked().size()) {
+            if (!Helpers.getBloc("Default").getMusic().get(i).getLinked().isEmpty()) {
                 Label head = new Label();
                 head.setText(Helpers.getBloc("Default").getMusic().get(i).getName());
                 y += 35;

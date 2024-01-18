@@ -39,10 +39,7 @@ public class Music{
     }
 
     public List<Long> getLinked() {
-        List<Long> returned = new LinkedList<>(link);
-        returned.add(0, this.key); //This guarantees that the lead track never changes.
-        // If you want to change the lead track, use getLinked and linkAll to move on the new head, then clear this link.
-        return returned;
+        return Collections.unmodifiableList(link);
     }
 
     public void linkTrack(Music m) {

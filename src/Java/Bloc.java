@@ -131,7 +131,10 @@ public class Bloc{
         if (!Helpers.hasMusicKey(nextThing)) {
             purge(nextThing);
         }
-        try {return Helpers.getMusic(nextThing);}
+        try {
+            if (useLinked.contains(nextThing)) orderSoFar.addAll(Helpers.getMusic(nextThing).getLinked());
+            return Helpers.getMusic(nextThing);
+        }
         catch (Exception ignored) {return null;} //shouldn't ever happen
     }
 
