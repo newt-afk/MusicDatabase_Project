@@ -27,49 +27,52 @@ public class FileManager {
     public static Map<Long, Music> parseMusicFile()  {
         Map<Long, Music> ret = new HashMap<>();
         List<Long> defaultBloc = new ArrayList<>();
+        String name, artist, genre, filename = "";
+        long key;
         try {
             Scanner s = new Scanner(musicConf);
-            String name, artist, genre, filename;
-            long key;
             List<Long> linked = new LinkedList<>();
             while (s.hasNext()) {
                 linked.clear();
-                s.next();
-                name = s.next();
-                s.next();
-                artist = s.next();
-                s.next();
-                genre = s.next();
-                s.next();
-                filename = s.next();
+                name = s.nextLine();
+                artist = s.nextLine();
+                genre = s.nextLine();
+                filename = s.nextLine();
                 if (FileManager.class.getResource(musicPath + filename) == null) {
                     LOGGER.warning("Tried to find " + name + " but file doesn't exist.");
-                    String n = s.next();
-                    while (!n.equals("END")) n = s.next();
+                    String n = s.nextLine();
+                    while (!n.equals("END")) n = s.nextLine();
                     continue;
                 }
                 File file = new File(FileManager.class.getResource(musicPath + filename).getPath());
-                s.next();
                 key = s.nextLong();
-                String n = s.next();
+                s.nextLine();
+                String n = s.nextLine();
                 if (n.equals("LISTSTART")) {
-                    while (s.next().equals("ID: ")) {
+                    while (s.hasNextLong()) {
                         linked.add(s.nextLong());
-                    } //LISTEND: is the last token consumed by the scanner
+                    }
+                    s.nextLine();
+                    if (!s.nextLine().equals("LISTEND")) throw new Exception("Missing LISTEND token");
+                }else {
+                    ret.put(key, new Music(name, artist, genre, file, key));
+                    ret.get(key).linkTracks(linked);
+                    defaultBloc.add(key);
                 }
-                if (!s.next().equals("END")) LOGGER.warning("Missing END or LISTEND");
+                if (!s.nextLine().equals("END")) LOGGER.warning("Missing END token");
                 ret.put(key, new Music(name, artist, genre, file, key));
                 ret.get(key).linkTracks(linked);
                 defaultBloc.add(key);
             }
         }catch (IOException io) {
-            LOGGER.log(Level.SEVERE, "IO exception encountered when reading music file", io);
+            LOGGER.log(Level.SEVERE, "IO exception encountered when reading music file");
+            LOGGER.log(Level.SEVERE, "File we're on " + filename, io);
         }catch (InputMismatchException inpme) {
-            LOGGER.log(Level.SEVERE, "Unexpected token in Music file", inpme);
+            LOGGER.log(Level.SEVERE, "Unexpected token in Media.Music file", inpme);
             ret.clear();
             defaultBloc.clear();
         }catch (NoSuchElementException nsee) {
-            LOGGER.log(Level.SEVERE, "Unexpected End of File for Music file", nsee);
+            LOGGER.log(Level.SEVERE, "Unexpected End of File for Media.Music file", nsee);
             ret.clear();
             defaultBloc.clear();
         }catch (Exception e) {
@@ -83,22 +86,19 @@ public class FileManager {
         try {
             Scanner s = new Scanner(blocConf);
             while (s.hasNext()) {
-                String name;
-                List<Long> ids = new ArrayList<>();
-                s.next();
-                name = s.next();
-                if (s.next().equals("END")) {
+                String name = s.nextLine();
+                if (s.nextLine().equals("END")) {
                     ret.put(name, new Bloc(name));
                     continue;
                 }
-                while (s.next().equals("ID:")) {
+                List<Long> ids = new ArrayList<>();
+                while (s.hasNextLong()) {
                     ids.add(s.nextLong());
                 }
-                if (!s.next().equals("END")) LOGGER.warning("Missing END token");
+                s.nextLine();
+                if (!s.nextLine().equals("ENDDATA")) throw new Exception("No ENDDATA token to end data");
+                if (!s.nextLine().equals("END")) throw new Exception("No END token to end Bloc");
                 ret.put(name, new Bloc(name, ids));
-                for (String key: ret.keySet()) {
-                    System.out.println(key + ": " + ret.get(key));
-                }
             }
         }catch (IOException io)  {
             LOGGER.log(Level.SEVERE,"Error reading file", io);
@@ -131,7 +131,7 @@ public class FileManager {
             }
             fw.flush();
         }catch (IOException io) {
-            LOGGER.log(Level.SEVERE, "Could not save state of Music", io);
+            LOGGER.log(Level.SEVERE, "Could not save state of Media.Music", io);
         }
     }
     public static void saveBlocs(List<Bloc> list) {

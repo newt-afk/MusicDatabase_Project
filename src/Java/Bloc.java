@@ -224,15 +224,15 @@ public class Bloc{
     public String toFile() {
         if (name.equals("Default")) return "";
         //Default is the master song list, we shouldn't record it. It will be generated
-        StringBuilder sb = new StringBuilder("Name: " + name + "\n");
+        StringBuilder sb = new StringBuilder(name + "\n");
         if (!data.isEmpty()) {
             sb.append("STARTDATA\n");
             for (long l : data) {
-                sb.append("ID: ").append(l).append("\n");
+                sb.append(l).append("\n");
             }
             sb.append("ENDDATA\n");
         }
-        sb.append("END\n\n");
+        sb.append("END\n");
         return sb.toString();
     }
 

@@ -143,14 +143,14 @@ public class Music{
     }
 
     public String fileString() {
-        StringBuilder ret = new StringBuilder(String.format("Name: %s\nArtist: %s\nGenre: %s\nFilename: %s\nID: %d\n",
+        StringBuilder ret = new StringBuilder(String.format("%s\n%s\n%s\n%s\n%d\n",
                 name, artist, genre, file.getName(), key));
         if (!link.isEmpty()) {
             ret.append("LISTSTART\n");
-            for (long l: link) ret.append("ID: ").append(l).append('\n');
+            for (long l: link) ret.append(l).append('\n');
             ret.append("LISTEND\n");
         }
-        ret.append("END\n\n");
+        ret.append("END\n");
         return ret.toString();
     }
 

@@ -44,7 +44,7 @@ public class Main extends Application{
         File file1 = new File("src/Media/Music/Marble Soda.mp3");
         File file2 = new File("src/Media/Music/Fantasie Impromptu.mp3");
         Helpers.addMusic(new Music("test1", " ", " ", file1));
-        Helpers.addMusic(new Music("Fantasie", "no clue", "pop?", file2));
+        Helpers.addMusic(new Music("Fantasie", "Fredrick Chopin", "Romantic", file2));
         System.out.println(Helpers.getBloc("Default").getMusic().toString());
 
         stage.show();
