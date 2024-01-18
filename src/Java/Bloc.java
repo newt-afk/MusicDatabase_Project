@@ -67,6 +67,7 @@ public class Bloc{
 
     public List<Music> getMusic() {
         List<Music> stuff = new LinkedList<>();
+        Set<Long> toBePurged = new HashSet<>();
         for (long i: data) {
             try {
                 stuff.add(Helpers.getMusic(i));
@@ -76,9 +77,10 @@ public class Bloc{
                     }catch (Exception ignored) {}
                 }
             }catch (Exception e) {
-                purge(i);
+                toBePurged.add(i);
             }
         }
+        for (long i: toBePurged) purge(i);
         return Collections.unmodifiableList(stuff);
     }
 
@@ -86,7 +88,7 @@ public class Bloc{
         orderSoFar.clear();
         currentPosition = 0;
         posOnData = 0;
-        scrambled.clear();
+        if (scrambled != null) scrambled.clear();
         smartQueue.clear();
     }
     private void purge(long id) {
@@ -96,9 +98,9 @@ public class Bloc{
         if (data.isEmpty()) reset();
         else {
             smartQueue.removeIf(x -> x == id);
-            scrambled.removeIf(x -> x == id);
+            if (scrambled != null) scrambled.removeIf(x -> x == id);
         }
-        while (orderSoFar.get(currentPosition) == id && currentPosition > 0) currentPosition--;
+        while (currentPosition > 0 && orderSoFar.get(currentPosition) == id ) currentPosition--;
         orderSoFar.removeIf(x -> x ==id);
     }
     public void reorder(int pos1, int pos2) {
@@ -204,7 +206,7 @@ public class Bloc{
         else data.add(pos, m.key);
     }
     public void removeSong(int pos) {
-        if (pos < 0 || pos > data.size())
+        if (pos < 0 || pos >= data.size())
             LOGGER.severe("Tried removing index " + pos + " for a " + data.size() + " Bloc");
         else data.remove(pos);
     }
