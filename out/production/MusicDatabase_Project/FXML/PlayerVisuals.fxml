@@ -66,18 +66,15 @@
          <children>
             <ScrollPane fx:id="scroll1" hbarPolicy="NEVER" hmin="1.0" layoutX="14.0" layoutY="13.0" prefHeight="255.0" prefWidth="111.0" style="-fx-background-color: grey;" vbarPolicy="NEVER">
                <content>
-                  <AnchorPane prefHeight="514.0" prefWidth="112.0" style="-fx-background-color: grey;">
-                     <children>
-                        <Button fx:id="playlist" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Playlist 1" />
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane fx:id="playlistList" prefHeight="514.0" prefWidth="112.0" style="-fx-background-color: grey;" />
                </content>
             </ScrollPane>
             <ScrollPane fx:id="scroll11" hbarPolicy="NEVER" hmin="1.0" layoutX="137.0" layoutY="13.0" prefHeight="234.0" prefWidth="246.0" style="-fx-background-color: grey; -fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;" vbarPolicy="NEVER">
                <content>
-                  <AnchorPane prefHeight="514.0" prefWidth="245.0" style="-fx-background-color: grey;">
+                  <AnchorPane prefHeight="514.0" prefWidth="245.0" style="-fx-background-color: grey; -fx-background-radius: 0;">
                      <children>
-                        <Button fx:id="playlist1" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Playlist 1" />
+                        <Button fx:id="playlist1" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="Playlist 1" />
+                        <Button layoutX="179.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
                      </children>
                   </AnchorPane>
                </content>

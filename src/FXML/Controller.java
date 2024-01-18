@@ -14,8 +14,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controller implements Initializable{
+    private static final Logger LOGGER = Logger.getLogger(Controller.class.getName());
     public double progress;
     public boolean opacity;
     public boolean opacity2;
@@ -67,6 +70,9 @@ public class Controller implements Initializable{
     @FXML
     private Label errorAddition;
 
+    @FXML
+    private AnchorPane playlistList;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         pB.setStyle("-fx-accent: Yellow");
@@ -76,6 +82,23 @@ public class Controller implements Initializable{
         vP.setOpacity(0);
     }
 
+    public void viewPlaylists() {
+        if(!Helpers.blocList().isEmpty()) {
+            Logger.getAnonymousLogger().log(Level.FINE,"Bloc is not empty");
+            for(int i = 0; i < Helpers.blocList().size(); i++) {
+                Button playlistNames = new Button();
+                if (Helpers.blocList().get(i).name == "Default") {
+                    playlistNames.setText("All Songs");
+                } else {
+                    playlistNames.setText(Helpers.blocList().get(i).name);
+                }
+                playlistList.getChildren().add(playlistNames);
+                stage.show();
+            }
+            return;
+        }
+        Logger.getAnonymousLogger().log(Level.FINE,"Bloc is empty");
+    }
     public void viewAlbum(ActionEvent e) {
         System.out.println("viewPlaylist");
         if (opacity == true) {
@@ -89,6 +112,7 @@ public class Controller implements Initializable{
             opacity2 = false;
             vP.setOpacity(0);
         }
+        viewPlaylists();
     }
 
     public String addSongName(){

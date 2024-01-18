@@ -30,6 +30,9 @@ public class Main extends Application{
 
         Controller controller = (Controller)loader.getController();
         controller.setStage(stage);
+
+        Helpers.addBloc(new Bloc("Joshua"));
+        Helpers.addBloc(new Bloc("Testingashbdiaubsdha"));
     }
 
     @Override
