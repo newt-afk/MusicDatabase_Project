@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
@@ -19,31 +20,35 @@
             <ColorAdjust brightness="-0.17" />
          </effect>
          <children>
-            <Button layoutX="276.0" layoutY="45.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="35.0" style="-fx-background-color: #000000;" />
-            <Button layoutX="325.0" layoutY="60.0" mnemonicParsing="false" onAction="#skipForward" text="&gt; &gt; &gt;" />
-            <Button layoutX="215.0" layoutY="60.0" mnemonicParsing="false" onAction="#skipBackwards" text="&lt; &lt; &lt;" />
-            <CheckBox layoutX="489.0" layoutY="18.0" mnemonicParsing="false" onAction="#loop" text="Loop" textFill="WHITE" />
-            <CheckBox layoutX="489.0" layoutY="50.0" mnemonicParsing="false" onAction="#shuffle" text="Shuffle" textFill="WHITE" />
-            <CheckBox layoutX="489.0" layoutY="80.0" mnemonicParsing="false" onAction="#shuffle2" text="Shuffle +" textFill="WHITE" />
-            <ProgressBar fx:id="pB" layoutX="153.0" layoutY="19.0" prefHeight="18.0" prefWidth="286.0" progress="0.01" />
-            <Button fx:id="playB" layoutX="275.0" layoutY="57.0" mnemonicParsing="false" onAction="#playButton" prefHeight="33.0" prefWidth="40.0" style="-fx-background-color: black;">
-               <graphic>
-                  <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Media/White%20Play%20Button.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <AnchorPane layoutX="191.0" layoutY="52.0" prefHeight="44.0" prefWidth="209.0" style="-fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;" />
-            <AnchorPane layoutX="474.0" layoutY="12.0" prefHeight="97.0" prefWidth="101.0" style="-fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10;" />
-            <AnchorPane layoutX="14.0" layoutY="25.0" prefHeight="79.0" prefWidth="92.0" style="-fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10;">
+            <AnchorPane layoutX="120.0" layoutY="52.0" prefHeight="44.0" prefWidth="280.0" style="-fx-border-color: white; -fx-border-radius: 10; -fx-border-width: 2;">
+               <children>
+                  <Button layoutX="47.0" layoutY="10.0" mnemonicParsing="false" onAction="#skipBackwards" text="&lt; &lt; &lt;" />
+                  <Button fx:id="playB" layoutX="111.0" layoutY="6.0" mnemonicParsing="false" onAction="#playButton" prefHeight="33.0" prefWidth="40.0" style="-fx-background-color: black;">
+                     <graphic>
+                        <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Media/White%20Play%20Button.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="170.0" layoutY="10.0" mnemonicParsing="false" onAction="#skipForward" text="&gt; &gt; &gt;" />
+               </children></AnchorPane>
+            <AnchorPane layoutX="474.0" layoutY="12.0" prefHeight="97.0" prefWidth="101.0" style="-fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10;">
+               <children>
+                  <CheckBox layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#loop" text="Loop" textFill="WHITE" />
+                  <CheckBox layoutX="14.0" layoutY="40.0" mnemonicParsing="false" onAction="#shuffle" text="Shuffle" textFill="WHITE" />
+                  <CheckBox layoutX="12.0" layoutY="66.0" mnemonicParsing="false" onAction="#shuffle2" prefHeight="17.0" prefWidth="77.0" text="Shuffle +" textFill="WHITE" />
+               </children></AnchorPane>
+            <ProgressBar fx:id="pB" layoutX="120.0" layoutY="18.0" prefHeight="18.0" prefWidth="286.0" progress="0.01" />
+            <AnchorPane layoutX="14.0" layoutY="17.0" prefHeight="87.0" prefWidth="92.0" style="-fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10;">
                <children>
                   <Label layoutX="15.0" layoutY="6.0" text="Song Name" textFill="#fffdfd" />
                   <Label layoutX="15.0" layoutY="31.0" text="Album" textFill="WHITE" />
                   <Label layoutX="14.0" layoutY="57.0" text="Artist" textFill="WHITE" />
                </children>
             </AnchorPane>
+            <Slider layoutX="435.0" layoutY="14.0" orientation="VERTICAL" prefHeight="87.0" prefWidth="14.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="aM" layoutX="202.0" layoutY="12.0" opacity="0.0" prefHeight="280.0" prefWidth="403.0" style="-fx-background-color: grey; -fx-background-radius: 10px;">
@@ -55,7 +60,7 @@
             <Button fx:id="submitMusicAddition" layoutX="14.0" layoutY="174.0" mnemonicParsing="false" onAction="#submitMusicAddition" text="Add Song" />
             <Label fx:id="errorAddition" layoutX="14.0" layoutY="210.0" />
          </children></AnchorPane>
-    <AnchorPane layoutX="11.0" layoutY="12.0" minHeight="0.0" minWidth="0.0" prefHeight="280.0" prefWidth="179.0" style="-fx-background-color: grey; -fx-background-radius: 10;">
+      <AnchorPane layoutX="11.0" layoutY="12.0" minHeight="0.0" minWidth="0.0" prefHeight="280.0" prefWidth="179.0" style="-fx-background-color: grey; -fx-background-radius: 10;">
          <children>
             <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#addMusic" text="Add Music" />
             <Button fx:id="viewPlaylist" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" onAction="#viewAlbum" text="Playlists" />

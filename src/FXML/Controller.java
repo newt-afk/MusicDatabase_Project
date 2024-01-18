@@ -3,6 +3,7 @@ package FXML;
 import Java.Bloc;
 import Java.Helpers;
 import Java.Main;
+import Java.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -37,7 +38,7 @@ public class Controller implements Initializable{
     public Stage stage;
     AnchorPane lastOpened2 = new AnchorPane();
     File musicFile;
-    MediaPlayer currentSong;
+    Player player;
     boolean musicSubmitted;
 
     public void setStage(Stage stage) {
@@ -395,8 +396,8 @@ public class Controller implements Initializable{
         System.out.println("playButton");
         playing = !playing;
         LOGGER.info("playing: " + playing);
-        if (playing) currentSong.play();
-        else currentSong.pause();
+        if (playing) player.mp.play();
+        else player.mp.pause();
     }
 
     public void loop(ActionEvent e) {
@@ -419,12 +420,12 @@ public class Controller implements Initializable{
 
     public void skipForward(ActionEvent e) {
         System.out.println("skipForward");
-        currentSong.seek(new Duration(currentSong.getCurrentTime().toMillis() + 5000));
+        player.mp.seek(new Duration(player.mp.getCurrentTime().toMillis() + 5000));
     }
 
     public void skipBackwards(ActionEvent e) {
         System.out.println("skipBackwards");
-        currentSong.seek(new Duration(currentSong.getCurrentTime().toMillis() - 5000));
+        player.mp.seek(new Duration(player.mp.getCurrentTime().toMillis() - 5000));
     }
 
     public void addMusic(ActionEvent e) {

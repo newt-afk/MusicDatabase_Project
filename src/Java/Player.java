@@ -13,7 +13,7 @@ import javafx.scene.Parent;
 
 import java.io.IOException;
 
-class Player {
+public class Player {
     public MediaPlayer mp;
     private Bloc bloc;
     public Player(Bloc bloc) {
