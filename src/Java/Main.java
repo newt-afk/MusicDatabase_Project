@@ -31,4 +31,12 @@ public class Main extends Application{
         Controller controller = (Controller)loader.getController();
         controller.setStage(stage);
     }
+
+    @Override
+    public void stop() throws Exception {
+        FileManager.saveBlocs(Helpers.blocList());
+        FileManager.saveMusic(Helpers.musicList());
+        FileManager.saveState();
+        super.stop();
+    }
 }

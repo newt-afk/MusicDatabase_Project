@@ -26,6 +26,7 @@ public class Helpers {
     }
 
     public static void removeMusic(long id) {
+        BLOC_HASH_MAP.get("Default").removeAll(id);
         MUSIC_HASH_MAP.remove(id);
         Music.availableID--;
         for (long i = id + 1; MUSIC_HASH_MAP.containsKey(i); i++) {
@@ -55,6 +56,10 @@ public class Helpers {
         List<Bloc> ret = new LinkedList<>();
         for (String key: BLOC_HASH_MAP.keySet()) ret.add(BLOC_HASH_MAP.get(key));
         return Collections.unmodifiableList(ret);
+    }
+    public static List<Music> musicList() {
+        return BLOC_HASH_MAP.get("Default").getMusic();
+        // Need the bloc for ui purposes, no sense in re-engineering the whole thing.
     }
     private Helpers() {
         // This class is only meant to hold information shared between classes, and helper methods. It should only

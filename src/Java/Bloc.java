@@ -207,7 +207,10 @@ public class Bloc{
         else data.remove(pos);
     }
     public void removeAll(Music m) {
-        data.removeIf(x -> x == m.key); // removes all music objects with same objectID as m
+         if (m != null) removeAll(m.key);// removes all music objects with same objectID as m
+    }
+    public void removeAll(long id) {
+        purge(id);
     }
     public void removeAll(Collection<Long> musicCollection) {
         data.removeAll(musicCollection);
@@ -218,13 +221,13 @@ public class Bloc{
         //Default is the master song list, we shouldn't record it. It will be generated
         StringBuilder sb = new StringBuilder("Name: " + name + "\n");
         if (!data.isEmpty()) {
-            sb.append("STARTDATA");
+            sb.append("STARTDATA\n");
             for (long l : data) {
                 sb.append("ID: ").append(l).append("\n");
             }
-            sb.append("ENDDATA");
+            sb.append("ENDDATA\n");
         }
-        sb.append("END");
+        sb.append("END\n\n");
         return sb.toString();
     }
 

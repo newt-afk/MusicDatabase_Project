@@ -1,6 +1,7 @@
 package Java;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
@@ -115,6 +116,33 @@ public class FileManager {
             LOGGER.log(Level.SEVERE, "Error reading state file", e);
         }
         return ret;
+    }
+
+    public static void saveMusic(List<Music> list) {
+        try (FileWriter fw = new FileWriter(musicConf)) {
+            for (Music m: list) {
+                fw.append(m.fileString());
+            }
+            fw.flush();
+        }catch (IOException io) {
+            LOGGER.log(Level.SEVERE, "Could not save state of Music", io);
+        }
+    }
+    public static void saveBlocs(List<Bloc> list) {
+        try (FileWriter fw = new FileWriter(blocConf)) {
+            for (Bloc b: list) fw.append(b.toFile());
+            fw.flush();
+        }catch (IOException io) {
+            LOGGER.log(Level.SEVERE, "Could not save state of Blocs", io);
+        }
+    }
+    public static void saveState() {
+        try (FileWriter fw = new FileWriter(stateConf)) {
+            fw.append(Helpers.stateToFile());
+            fw.flush();
+        }catch (IOException io) {
+            LOGGER.log(Level.SEVERE, "Could not save state of system", io);
+        }
     }
 
 }
