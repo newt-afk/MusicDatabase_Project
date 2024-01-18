@@ -10,6 +10,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="base" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="405.0" prefWidth="599.0" style="-fx-background-color: black; -fx-border-color: black; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXML.Controller">
    <children>
@@ -58,19 +59,31 @@
          <children>
             <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#addMusic" text="Add Music" />
             <Button fx:id="viewPlaylist" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" onAction="#viewAlbum" text="Playlists" />
-            <Button fx:id="summon" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="summon" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" text="Linked Music" />
             <Button layoutX="14.0" layoutY="125.0" mnemonicParsing="false" text="Button" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="vP" layoutX="202.0" layoutY="12.0" prefHeight="280.0" prefWidth="403.0" style="-fx-background-color: grey; -fx-background-radius: 10px;">
          <children>
-            <ScrollPane fx:id="scroll1" hbarPolicy="NEVER" hmin="1.0" layoutX="14.0" layoutY="13.0" prefHeight="255.0" prefWidth="111.0" style="-fx-background-color: grey;" vbarPolicy="NEVER">
-               <content>
-                  <AnchorPane fx:id="playlistList" prefHeight="514.0" prefWidth="112.0" style="-fx-background-color: grey;" />
-               </content>
-            </ScrollPane>
-            <Label layoutX="137.0" layoutY="255.0" text="Label" />
-            <AnchorPane fx:id="songDisplay" layoutX="123.0" layoutY="13.0" prefHeight="255.0" prefWidth="266.0" />
+            <ScrollPane fx:id="scroll1" hbarPolicy="NEVER" hmin="1.0" layoutX="14.0" layoutY="13.0" prefHeight="205.0" prefWidth="111.0" style="-fx-background-color: grey; -fx-border-color: white; -fx-border-width: 2; -fx-border-radius: 10;" vbarPolicy="NEVER" />
+            <AnchorPane fx:id="songDisplay" layoutX="135.0" layoutY="13.0" prefHeight="205.0" prefWidth="254.0" />
+            <Button fx:id="addPlaylist" layoutX="14.0" layoutY="224.0" mnemonicParsing="false" onAction="#addAPlaylist" prefHeight="44.0" prefWidth="111.0" text="Add Playlist" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="addPlaylistMenu" layoutX="301.0" layoutY="99.0" opacity="0.0" prefHeight="103.0" prefWidth="217.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2;">
+         <children>
+            <Button fx:id="confirm" layoutX="82.0" layoutY="67.0" mnemonicParsing="false" onAction="#addingPlaylist" text="Confirm" />
+            <Button fx:id="exit" layoutX="196.0" layoutY="4.0" mnemonicParsing="false" onAction="#exitFromPlaylistMenu" prefHeight="17.0" prefWidth="22.0" text="X">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Button>
+            <Label fx:id="playlistLabel" layoutX="66.0" layoutY="50.0" prefHeight="17.0" prefWidth="92.0" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <TextField fx:id="playlistNameEnter" alignment="CENTER" layoutX="37.0" layoutY="25.0" promptText="Enter Playlist Name" />
          </children>
       </AnchorPane>
    </children>
