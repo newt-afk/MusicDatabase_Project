@@ -167,7 +167,9 @@ public class Bloc{
     public Music prev() {
         if (data.isEmpty()) return null;
         // returns music as we go backward in time
+        if (currentPosition < 0) currentPosition = 0;
         if (currentPosition == 0) return null;
+        if (currentPosition > orderSoFar.size()) currentPosition = orderSoFar.size() - 1;
         long prevThing = orderSoFar.get(--currentPosition);
         if (Helpers.hasMusicKey(prevThing))
             try {return Helpers.getMusic(prevThing);}
