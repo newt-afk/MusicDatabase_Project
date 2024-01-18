@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.logging.*;
 
 public class Helpers {
-    static {setupLogger();} // so the logger is loaded first, or close to first.
     private static final Logger LOGGER = Logger.getLogger(Helpers.class.getName());
     public static Long lastAvailableIDBeforeLastSave = FileManager.parseStateFile();
     private static final Map<String, Bloc> BLOC_HASH_MAP = FileManager.parseBlocFile();
@@ -69,15 +68,14 @@ public class Helpers {
     public static void setupLogger() {
         // this gets the root logger, all other loggers will send logs to the root
         Logger rootLogger = Logger.getLogger("");
-        System.out.println("badness");
         try {
             // need try catch in case we can't create the file and write to it
             Handler filehandler = new FileHandler("test.log");
-            rootLogger.info("Logger created");
             SimpleFormatter formatter = new SimpleFormatter();
             // remove default console handlers, we don't need them anymore
-            /*if (rootLogger.getHandlers()[0] instanceof ConsoleHandler)
-                rootLogger.removeHandler(rootLogger.getHandlers()[0]);*/
+            if (rootLogger.getHandlers()[0] instanceof ConsoleHandler)
+                rootLogger.removeHandler(rootLogger.getHandlers()[0]);
+            rootLogger.info("Logger created");
 
             filehandler.setFormatter(formatter);
             rootLogger.addHandler(filehandler);
