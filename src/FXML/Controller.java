@@ -420,19 +420,19 @@ public class Controller implements Initializable{
     public void loop(ActionEvent e) {
         System.out.println("Loop");
         loop = !loop;
-        Helpers.getBloc("Default").setLoop(loop);
+        player.setLoop(loop);
     }
 
     public void shuffle(ActionEvent e) {
         System.out.println("Shuffle");
         shuffle = !shuffle;
-        Helpers.getBloc("Default").setShuffle(shuffle);
+        player.setShuffle(shuffle);
     }
 
     public void shuffle2(ActionEvent e) {
         System.out.println("Shuffle2");
         shuffleplus = !shuffleplus;
-        Helpers.getBloc("Default").setSmartShuffle(shuffleplus);
+        player.setSmartShuffle(shuffleplus);
     }
 
     public void skipForward(ActionEvent e) {

@@ -39,8 +39,21 @@ public class Player {
         if (mp != null) mp.dispose();
     }
     public void setBloc(Bloc bloc) {
+        bloc.setLoop(this.bloc.isLooping());
+        bloc.setShuffle(this.bloc.isUsingShuffle());
+        bloc.setSmartShuffle(this.bloc.isUsingSmartShuffle());
         this.bloc = bloc;
         disposeOfPlayer();
     }
+    public void setShuffle(boolean shuffle) {
+        bloc.setShuffle(shuffle);
+    }
+    public void setSmartShuffle(boolean smartShuffle) {
+        bloc.setSmartShuffle(smartShuffle);
+    }
+    public void setLoop(boolean loop) {
+        bloc.setLoop(loop);
+    }
+
 
 }
