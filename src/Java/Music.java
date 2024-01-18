@@ -163,4 +163,8 @@ public class Music{
         }
         return ret.toString();
     }
+
+    public long getKey() {
+        return key;
+    }
 }

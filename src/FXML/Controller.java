@@ -1,5 +1,6 @@
 package FXML;
 
+import Java.Bloc;
 import Java.Helpers;
 import Java.Main;
 import javafx.event.ActionEvent;
@@ -20,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +35,7 @@ public class Controller implements Initializable{
     public boolean shuffleplus = false;
     public boolean loop = false;
     public Stage stage;
+    AnchorPane lastOpened2 = new AnchorPane();
     File musicFile;
     MediaPlayer currentSong;
     boolean musicSubmitted;
@@ -92,6 +95,24 @@ public class Controller implements Initializable{
     @FXML
     private AnchorPane base;
 
+    @FXML
+    private Button addPlaylist;
+
+    @FXML
+    private AnchorPane addPlaylistMenu;
+
+    @FXML
+    private TextField playlistNameEnter;
+
+    @FXML
+    private Button confirm;
+
+    @FXML
+    private Button exit;
+
+    @FXML
+    private Label playlistLabel;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         pB.setStyle("-fx-accent: Yellow");
@@ -99,34 +120,93 @@ public class Controller implements Initializable{
         fileSelect.setOpacity(1);
         errorAddition.setStyle("-fx-text-fill: Red");
         vP.setOpacity(0);
+        addPlaylistMenu.setOpacity(0);
     }
+
+    public void addAPlaylist(ActionEvent e) {
+        vP.setOpacity(0.5);
+        System.out.println("addPlaylist");
+        addPlaylistMenu.setOpacity(1);
+
+    }
+
+    public String getPlaylistName() {
+        return playlistNameEnter.getText();
+    }
+
+    public void exitFromPlaylistMenu() {
+        vP.setOpacity(1);
+        addPlaylistMenu.setOpacity(0);
+    }
+
+    public void addingPlaylist() {
+        String playlistName = getPlaylistName();
+        if (playlistName == "") {
+            playlistLabel.setText("Please enter a name.");
+            return;
+        }
+        Helpers.addBloc(new Bloc(playlistName));
+        exitFromPlaylistMenu();
+        viewPlaylists();
+    }
+
     public void viewPlaylists() {
+        AnchorPane playlistBlocs = new AnchorPane();
+        int height = 215;
+        if(35*Helpers.blocList().size() > 215) {
+            height = 35*Helpers.blocList().size();
+        }
+        playlistBlocs.setMinHeight(height);
+        playlistBlocs.setMinWidth(250);
+        playlistBlocs.setStyle("-fx-background-color: white");
+        playlistBlocs.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(10.0), new BorderWidths(2))));
+        playlistBlocs.setLayoutX(0);
+        playlistBlocs.setLayoutY(0);
+        playlistBlocs.setOpacity(1);
+
         final ScrollPane[] lastOpened = {new ScrollPane()};
+        final CheckBox[] lastOpened3 = {new CheckBox()};
         int y = -20;
         if(!Helpers.blocList().isEmpty()) {
             LOGGER.log(Level.FINE,"Bloc is not empty");
             for(int i = 0; i < Helpers.blocList().size(); i++) {
 
+                CheckBox check = new CheckBox("Link Tracks");
+                check.setLayoutX(300);
+                check.setLayoutY(230);
+                int blockNum = i;
+                check.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        for (int b = 0; b < Helpers.blocList().get(blockNum).getMusic().size(); b++) {
+                            Helpers.blocList().get(blockNum).useLinked.add(Helpers.blocList().get(blockNum).getMusic().get(b).getKey());
+                        }
+                    }
+                });
+                check.setOpacity(0);
+                vP.getChildren().add(check);
+                stage.show();
+
                 ScrollPane playlistScroll = new ScrollPane();
-                playlistScroll.setMinHeight(225);
+                playlistScroll.setMinHeight(205);
                 playlistScroll.setMinWidth(250);
                 playlistScroll.setStyle("-fx-background-color: Grey");
                 playlistScroll.setLayoutX(0);
                 playlistScroll.setLayoutY(0);
                 playlistScroll.setOpacity(0);
                 playlistScroll.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(10.0), new BorderWidths(2))));
-                playlistScroll.setStyle("-fx-border-width: 3");
-                playlistScroll.setStyle("-fx-border-radius: 10px");
                 playlistScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                 playlistScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
+                int height2 = 205;
+                if(35*Helpers.blocList().get(i).getMusic().size() > 215) {
+                    height2 = 35*Helpers.blocList().size();
+                }
                 AnchorPane playlistSongsContainer = new AnchorPane();
-                playlistSongsContainer.setMinHeight(60*Helpers.blocList().get(i).getMusic().size());
+                playlistSongsContainer.setMinHeight(height2);
                 playlistSongsContainer.setMinWidth(250);
                 playlistSongsContainer.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(10.0), new BorderWidths(2))));
-                playlistSongsContainer.setStyle("-fx-border-color: White");
-                playlistSongsContainer.setStyle("-fx-border-width: 3");
-                playlistSongsContainer.setStyle("-fx-border-radius: 10px");
+                playlistSongsContainer.setStyle("-fx-background-color: White");
                 playlistSongsContainer.setLayoutX(0);
                 playlistSongsContainer.setLayoutY(0);
                 playlistSongsContainer.setOpacity(1);
@@ -136,6 +216,9 @@ public class Controller implements Initializable{
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         playlistScroll.setOpacity(1);
+                        check.setOpacity(1);
+                        lastOpened3[0].setOpacity(0);
+                        lastOpened3[0] = check;
                         lastOpened[0].setOpacity(0);
                         lastOpened[0] = playlistScroll;
                         stage.show();
@@ -149,7 +232,9 @@ public class Controller implements Initializable{
                 }
 
                 playlistNames.setLayoutY(y);
-                playlistList.getChildren().add(playlistNames);
+                playlistNames.setLayoutX(10);
+                playlistBlocs.getChildren().add(playlistNames);
+                scroll1.setContent(playlistBlocs);
                 stage.show();
 
                 int altY = -20;
@@ -179,6 +264,33 @@ public class Controller implements Initializable{
                             delete.setText("Remove");
                             delete.setLayoutY(altY);
                             delete.setLayoutX(175);
+
+                            MenuButton addToPlaylists = new MenuButton("+");
+
+                            if (!Helpers.blocList().isEmpty()) {
+                                for (int n = 0; n < Helpers.blocList().size(); n++) {
+                                    MenuItem add = new MenuItem(Helpers.blocList().get(n).name);
+                                    int o = n;
+                                    addToPlaylists.getItems().add(add);
+                                    add.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent actionEvent) {
+                                            Helpers.blocList().get(o).addMusic(Helpers.blocList().get(blocRemoveInt).getMusic().get(songRemoveInt));
+                                            viewPlaylists();
+                                        }
+                                    });
+                                }
+                            }
+                            addToPlaylists.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+
+                                }
+                            });
+                            addToPlaylists.setLayoutY(altY);
+                            addToPlaylists.setLayoutX(125);
+
+                            playlistSongsContainer.getChildren().add(addToPlaylists);
                             playlistSongsContainer.getChildren().add(delete);
                         }
                     stage.show();
@@ -192,16 +304,15 @@ public class Controller implements Initializable{
 
     public void viewAlbum(ActionEvent e) {
         System.out.println("viewPlaylist");
-        if (opacity) {
-            opacity = false;
-            aM.setOpacity(0);
-        }
-        if (!opacity2) {
-            opacity2 = true;
+        if (lastOpened2 != vP) {
+            if (lastOpened2 != null){
+                lastOpened2.setOpacity(0);
+            }
             vP.setOpacity(1);
+            lastOpened2 = vP;
         } else {
-            opacity2 = false;
             vP.setOpacity(0);
+            lastOpened2 = null;
         }
         viewPlaylists();
     }
@@ -297,16 +408,16 @@ public class Controller implements Initializable{
 
     public void addMusic(ActionEvent e) {
         System.out.println("addMusic");
-        if (opacity2) {
-            opacity2 = false;
-            vP.setOpacity(0);
-        }
-        if (!opacity) {
-            opacity = true;
+        System.out.println("viewPlaylist");
+        if (lastOpened2 != aM) {
+            if (lastOpened2 != null){
+                lastOpened2.setOpacity(0);
+            }
             aM.setOpacity(1);
+            lastOpened2 = aM;
         } else {
-            opacity = false;
             aM.setOpacity(0);
+            lastOpened2 = null;
         }
     }
 }
