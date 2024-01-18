@@ -1,5 +1,8 @@
 package Java;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.*;
 
@@ -47,6 +50,11 @@ public class Helpers {
     }
     public static void removeBloc(String name) {
         BLOC_HASH_MAP.remove(name);
+    }
+    public static List<Bloc> blocList() {
+        List<Bloc> ret = new LinkedList<>();
+        for (String key: BLOC_HASH_MAP.keySet()) ret.add(BLOC_HASH_MAP.get(key));
+        return Collections.unmodifiableList(ret);
     }
     private Helpers() {
         // This class is only meant to hold information shared between classes, and helper methods. It should only
