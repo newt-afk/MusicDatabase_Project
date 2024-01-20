@@ -42,7 +42,7 @@ public class Bloc{
     }
 
     public void setShuffle(boolean shuffle) {
-        this.shuffle = shuffle;
+        Bloc.shuffle = shuffle;
     }
 
     public boolean isUsingSmartShuffle() {
@@ -50,7 +50,7 @@ public class Bloc{
     }
 
     public void setSmartShuffle(boolean smartShuffle) {
-        this.smartShuffle = smartShuffle;
+        Bloc.smartShuffle = smartShuffle;
     }
 
     public boolean isLooping() {
@@ -58,7 +58,7 @@ public class Bloc{
     }
 
     public void setLoop(boolean loop) {
-        this.loop = loop;
+        Bloc.loop = loop;
         if (!loop) {
             LinkedList<Long> temp = new LinkedList<>(data);
             Collections.shuffle(temp);

@@ -12,13 +12,4 @@ public class StateBean { // this gets around weirdness with action handlers on b
     static ScrollPane lastOpenedPlaylist = null;
     static Button buttonTiedToLastPlaylist = null;
     static CheckBox cboxTiedToLastPlaylist = null;
-
-
-    public Bloc getCurrentBloc() {
-        return currentBloc;
-    }
-
-    public void setCurrentBloc(Bloc currentBloc) {
-        this.currentBloc = currentBloc;
-    }
 }

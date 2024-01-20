@@ -38,8 +38,7 @@ public class Player {
         else this.mp.play();
     }
     public void pause() {
-        if (this.mp == null) return;
-        else this.mp.pause();
+        if (this.mp != null) this.mp.pause();
     }
     public void playNext(boolean shouldPlay) {
         disposeOfPlayer();
