@@ -1,14 +1,17 @@
 package Java;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.*;
 
 public class Helpers {
+    static {
+        StateOnLastSave state = FileManager.parseStateFile();
+        lastVolumeBeforeLastSave = state.lastVolumeSet();
+        lastAvailableIDBeforeLastSave = state.lastMusicID();
+    }
     private static final Logger LOGGER = Logger.getLogger(Helpers.class.getName());
-    public static Long lastAvailableIDBeforeLastSave = FileManager.parseStateFile();
+    public static final long lastAvailableIDBeforeLastSave;
+    public static final double lastVolumeBeforeLastSave;
     private static final Map<String, Bloc> BLOC_HASH_MAP = FileManager.parseBlocFile();
     private static final Map<Long, Music> MUSIC_HASH_MAP = FileManager.parseMusicFile();
     public static Music getMusic(Long id) throws Exception {
@@ -41,6 +44,8 @@ public class Helpers {
     }
 
     public static boolean hasBloc(String name) {return BLOC_HASH_MAP.containsKey(name);}
+    public static Set<Long> getMusicIDs() {return MUSIC_HASH_MAP.keySet();}
+    public static Set<String> getBlocNames() {return BLOC_HASH_MAP.keySet();}
     public static Bloc getBloc(String name) {return BLOC_HASH_MAP.get(name);}
     public static void addBloc(Bloc b) {
         if (b == null) LOGGER.severe("Tried to add NULL Bloc to the Map");
@@ -83,6 +88,6 @@ public class Helpers {
     }
 
     public static String stateToFile() {
-        return "MusicNextID: " + Music.availableID;
+        return "" + Music.availableID + '\n' + Main.getVolume();
     }
 }

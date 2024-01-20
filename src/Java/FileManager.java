@@ -112,17 +112,17 @@ public class FileManager {
         }catch (Exception e) {LOGGER.log(Level.SEVERE, "Badness", e);}
         return ret;
     }
-    public static long parseStateFile() {
-        long ret = 0;
+    public static StateOnLastSave parseStateFile() {
+        long lastMusicID = 0;
+        double lastVolume =0.5;
         try {
             Scanner s = new Scanner(stateConf);
-            if (!s.hasNext()) return ret;
-            s.next();
-            ret = s.nextLong();
+            lastMusicID = s.nextLong();
+            lastVolume = s.nextDouble();
         }catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error reading state file", e);
         }
-        return ret;
+        return new StateOnLastSave(lastMusicID, lastVolume);
     }
 
     public static void saveMusic(List<Music> list) {

@@ -2,29 +2,20 @@ package Java;
 
 import FXML.Controller;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import javafx.scene.text.Text;
-import Java.Player;
 
-import java.io.File;
-import java.io.FileReader;
 
 public class Main extends Application{
     public static void main(String[] args) {
         Helpers.setupLogger();
         launch(args);
     }
+
+    static Controller controller;
 
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PlayerVisuals.fxml"));
@@ -36,17 +27,12 @@ public class Main extends Application{
         stage.setResizable(false);
         stage.show();
 
-        Controller controller = (Controller)loader.getController();
+        controller = loader.getController();
         controller.setStage(stage);
-
-        Helpers.addBloc(new Bloc("Halloween"));
-        Helpers.addBloc(new Bloc("X-Mas"));
-        System.out.println(Helpers.blocList());
-
-        System.out.println(Helpers.getBloc("Default").getMusic().toString());
-
         stage.show();
     }
+
+    public static double getVolume() {return controller.getVolume();}
 
     @Override
     public void stop() throws Exception {

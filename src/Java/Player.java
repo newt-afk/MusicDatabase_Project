@@ -1,11 +1,30 @@
 package Java;
 
-import FXML.Controller;
 import javafx.scene.media.*;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Player {
     public MediaPlayer mp;
-    public Bloc bloc;
+    private Bloc bloc;
+    private double vol = Helpers.lastVolumeBeforeLastSave;
+    private final List<Runnable> toRun = new LinkedList<>();
+
+    public double getVolume() {
+        return vol;
+    }
+
+    public void runOnEndOfMusic(Runnable runnable) {
+        if (mp != null) this.mp.setOnEndOfMedia(runnable);
+        toRun.add(runnable);
+    }
+
+    public void setVolume(double vol) {
+        if (mp != null) mp.setVolume(vol);
+        this.vol = vol;
+    }
+
     public Music m;
     public Player(Bloc bloc) {
         this.bloc = bloc;
@@ -14,37 +33,42 @@ public class Player {
         this.bloc = Helpers.getBloc("Default");
         System.out.println(bloc);
     }
-    public void playNext() {
-        Controller control = new Controller();
-        double vol = -1;
-        if (mp != null) vol = mp.getVolume();
-        disposeOfPlayer();
-        m = bloc.next();
-        if (m == null) return; //end of playlist, and no loop
-        mp = m.toMediaPlayer();
-        if (vol != -1) mp.setVolume(vol);
-        mp.play();
-        mp.setOnEndOfMedia(this::playNext);
+    public void play() {
+        if (this.mp == null) playNext(true);
+        else this.mp.play();
     }
-    public void playPrev() {
-        double vol = -1;
-        if (mp != null) vol = mp.getVolume();
+    public void pause() {
+        if (this.mp != null) this.mp.pause();
+    }
+    public void playNext(boolean shouldPlay) {
         disposeOfPlayer();
-        m = bloc.prev();
+        try {
+            if (shouldPlay) playMusic((m = bloc.next()));
+            else setupMusic((m = bloc.next()));
+        }catch (OutOfMusicException ignored) {/*if out of music, don't play anything anymore*/}
+    }
+    public void playPrev(boolean shouldPlay) {
+        disposeOfPlayer();
+        if (shouldPlay) playMusic(bloc.prev());
+        else setupMusic(bloc.prev());
+    }
+    private void playMusic(Music m) {
+        setupMusic(m);
+        if (mp != null) mp.setAutoPlay(true);
+    }
+    private void setupMusic(Music m) {
         if (m == null) return;
         mp = m.toMediaPlayer();
-        if (vol != -1) mp.setVolume(vol);
-        mp.play();
-        mp.setOnEndOfMedia(this::playNext);
+        mp.setVolume(vol);
+        mp.setOnEndOfMedia(() -> this.playNext(true));
+        for (Runnable r: toRun) mp.setOnEndOfMedia(r);
     }
     private void disposeOfPlayer() {
         if (mp != null) mp.dispose();
     }
-    public void setBloc(Bloc bloc) {
-        bloc.setLoop(this.bloc.isLooping());
-        bloc.setShuffle(this.bloc.isUsingShuffle());
-        bloc.setSmartShuffle(this.bloc.isUsingSmartShuffle());
-        this.bloc = bloc;
+    public String getBlocName() {return bloc.name;}
+    public void setBloc(Bloc newBloc) {
+        this.bloc = newBloc;
         disposeOfPlayer();
     }
     public void setShuffle(boolean shuffle) {

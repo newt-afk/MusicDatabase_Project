@@ -9,12 +9,13 @@ public class Bloc{
     public String name;
     List<Long> data = new ArrayList<>(), orderSoFar = new ArrayList<>();
     int currentPosition = 0;
-    private boolean shuffle, smartShuffle, loop;
-    public final Set<Long> useLinked = new HashSet<>();
+    private static boolean shuffle, smartShuffle, loop;
+    // public final Set<Long> useLinked = new HashSet<>();
 
     // below are just for shuffling and generating the next song to play
     private Queue<Long> scrambled; // purpose changes depending on the shuffle type
     private final Queue<Integer> smartQueue = new LinkedList<>();
+    public boolean Linked = false;
     private static final Random rand = new Random();
     private int posOnData = 0;
     public Bloc() {this.name = nameGen();} // default initializer
@@ -41,7 +42,7 @@ public class Bloc{
     }
 
     public void setShuffle(boolean shuffle) {
-        this.shuffle = shuffle;
+        Bloc.shuffle = shuffle;
     }
 
     public boolean isUsingSmartShuffle() {
@@ -49,7 +50,7 @@ public class Bloc{
     }
 
     public void setSmartShuffle(boolean smartShuffle) {
-        this.smartShuffle = smartShuffle;
+        Bloc.smartShuffle = smartShuffle;
     }
 
     public boolean isLooping() {
@@ -57,7 +58,7 @@ public class Bloc{
     }
 
     public void setLoop(boolean loop) {
-        this.loop = loop;
+        Bloc.loop = loop;
         if (!loop) {
             LinkedList<Long> temp = new LinkedList<>(data);
             Collections.shuffle(temp);
@@ -83,6 +84,7 @@ public class Bloc{
         for (long i: toBePurged) purge(i);
         return Collections.unmodifiableList(stuff);
     }
+    public List<Long> getMusicIDs() {return Collections.unmodifiableList(data);}
 
     public void reset() { //moves the next track to be played back to the front.
         orderSoFar.clear();
@@ -119,7 +121,7 @@ public class Bloc{
         // shuffles the underlying array
         Collections.shuffle(data);
     }
-    public Music next()  {
+    public Music next() throws OutOfMusicException {
         if (data.isEmpty()) return null;
         // returns music as we go forward in time
         if (orderSoFar.size() <= currentPosition) {
@@ -130,15 +132,16 @@ public class Bloc{
         long nextThing = orderSoFar.get(currentPosition++);
         if (!Helpers.hasMusicKey(nextThing)) {
             purge(nextThing);
+            return next();
         }
         try {
-            if (useLinked.contains(nextThing)) orderSoFar.addAll(Helpers.getMusic(nextThing).getLinked());
+            if (this.Linked) orderSoFar.addAll(Helpers.getMusic(nextThing).getLinked());
             return Helpers.getMusic(nextThing);
         }
         catch (Exception ignored) {return null;} //shouldn't ever happen
     }
 
-    private Long nextMusicGenerator() {
+    private long nextMusicGenerator() throws OutOfMusicException {
         if (smartShuffle) {
             if (loop) {
                 if (smartQueue.size() > 10) smartQueue.poll();
@@ -150,13 +153,17 @@ public class Bloc{
                 smartQueue.add(r);
                 return data.get(r);
             }else { //literally, smartshuffle is useless without looping. this is the same as shuffle
-                return scrambled.poll();
+                if (scrambled.peek() != null)
+                    return scrambled.poll();
+                else throw new OutOfMusicException();
             }
         } else if (shuffle) {
             if (loop) {
                 return data.get(rand.nextInt(data.size()));
             }else {
-                return scrambled.poll();
+                if (scrambled.peek() != null)
+                    return scrambled.poll();
+                else throw new OutOfMusicException();
             }
         }else {
             if (loop) {
@@ -164,7 +171,8 @@ public class Bloc{
                 posOnData = (posOnData + 1) % data.size();
                 return ret;
             }else {
-                return posOnData >= data.size()? null: data.get(posOnData++);
+                if (posOnData < data.size()) return data.get(posOnData++);
+                else throw new OutOfMusicException();
             }
         }
     }
@@ -183,9 +191,6 @@ public class Bloc{
             purge(prevThing);
             return prev();
         }
-    }
-    Music query(String trait) {
-        return null;
     }
 
     public void addMusic(Music m) {
