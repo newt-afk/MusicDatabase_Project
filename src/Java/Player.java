@@ -10,6 +10,7 @@ public class Player {
     private Bloc bloc;
     private double vol = Helpers.lastVolumeBeforeLastSave;
     private final List<Runnable> toRun = new LinkedList<>();
+    public Music m;
 
     public double getVolume() {
         return vol;
@@ -25,7 +26,6 @@ public class Player {
         this.vol = vol;
     }
 
-    public Music m;
     public Player(Bloc bloc) {
         this.bloc = bloc;
     }
@@ -49,8 +49,10 @@ public class Player {
     }
     public void playPrev(boolean shouldPlay) {
         disposeOfPlayer();
-        if (shouldPlay) playMusic(bloc.prev());
-        else setupMusic(bloc.prev());
+        try {
+            if (shouldPlay) playMusic(bloc.prev());
+            else setupMusic(bloc.prev());
+        }catch (OutOfMusicException ignored) {}
     }
     private void playMusic(Music m) {
         setupMusic(m);

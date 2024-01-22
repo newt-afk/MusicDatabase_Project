@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 public class Bloc{
     private static final Logger LOGGER = Logger.getLogger(Bloc.class.getName());
     public String name;
-    List<Long> data = new ArrayList<>(), orderSoFar = new ArrayList<>();
-    int currentPosition = 0;
+    private final List<Long> data = new ArrayList<>(), orderSoFar = new ArrayList<>();
+    private int currentPosition = 0;
     private static boolean shuffle, smartShuffle, loop;
     // public final Set<Long> useLinked = new HashSet<>();
 
@@ -75,7 +75,7 @@ public class Bloc{
                 for (long j: Helpers.getMusic(i).link) {
                     try {
                         stuff.add(Helpers.getMusic(j));
-                    }catch (Exception ignored) {}
+                    }catch (MusicDoesNotExistException ignored) {}
                 }
             }catch (Exception e) {
                 toBePurged.add(i);
@@ -122,7 +122,7 @@ public class Bloc{
         Collections.shuffle(data);
     }
     public Music next() throws OutOfMusicException {
-        if (data.isEmpty()) return null;
+        if (data.isEmpty()) throw new OutOfMusicException();
         // returns music as we go forward in time
         if (orderSoFar.size() <= currentPosition) {
             orderSoFar.add(nextMusicGenerator());
@@ -138,7 +138,7 @@ public class Bloc{
             if (this.Linked) orderSoFar.addAll(Helpers.getMusic(nextThing).getLinked());
             return Helpers.getMusic(nextThing);
         }
-        catch (Exception ignored) {return null;} //shouldn't ever happen
+        catch (MusicDoesNotExistException ignored) {throw new OutOfMusicException();} //shouldn't ever happen
     }
 
     private long nextMusicGenerator() throws OutOfMusicException {
@@ -177,16 +177,15 @@ public class Bloc{
         }
     }
 
-    public Music prev() {
-        if (data.isEmpty()) return null;
+    public Music prev() throws OutOfMusicException{
+        if (data.isEmpty()) throw new OutOfMusicException();
         // returns music as we go backward in time
-        if (currentPosition < 0) currentPosition = 0;
-        if (currentPosition == 0) return null;
+        if (currentPosition <= 0) throw new OutOfMusicException();
         if (currentPosition > orderSoFar.size()) currentPosition = orderSoFar.size() - 1;
         long prevThing = orderSoFar.get(--currentPosition);
         if (Helpers.hasMusicKey(prevThing))
             try {return Helpers.getMusic(prevThing);}
-        catch (Exception e) {return null;}
+            catch (MusicDoesNotExistException e) {throw new OutOfMusicException();}
         else {
             purge(prevThing);
             return prev();

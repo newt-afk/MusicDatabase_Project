@@ -14,11 +14,11 @@ public class Helpers {
     public static final double lastVolumeBeforeLastSave;
     private static final Map<String, Bloc> BLOC_HASH_MAP = FileManager.parseBlocFile();
     private static final Map<Long, Music> MUSIC_HASH_MAP = FileManager.parseMusicFile();
-    public static Music getMusic(Long id) throws Exception {
+    public static Music getMusic(Long id) throws MusicDoesNotExistException{
         if (MUSIC_HASH_MAP.containsKey(id)) {
             return MUSIC_HASH_MAP.get(id);
         }
-        throw new Exception("Music doesn't exist");
+        throw new MusicDoesNotExistException();
     }
     public static void addMusic(Music music) {
         if (MUSIC_HASH_MAP.containsKey(music.key))
